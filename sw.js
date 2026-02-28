@@ -1,17 +1,17 @@
 // ═══════════════════════════════════════════════════════
-// SoulCode Service Worker v4
+// SoulCode Service Worker v6
 // © Manik Roy 2026 — Offline-first PWA
-// Updated: Subscription system, QR upload, Clear All, Password fix
+// Updated: Subscription price updated to ₹999/month
 // ═══════════════════════════════════════════════════════
 
-const VERSION     = '4.0.0';
-const CACHE_SHELL = 'soulcode-shell-v4';
-const CACHE_CDN   = 'soulcode-cdn-v4';
+const VERSION     = '6.0.0';
+const CACHE_SHELL = 'soulcode-shell-v6';
+const CACHE_CDN   = 'soulcode-cdn-v6';
 const OLD_CACHES  = [
   'soulcode-v1', 'soulcode-v2',
   'soulcode-blob-v2',
-  'soulcode-shell-v1', 'soulcode-shell-v2', 'soulcode-shell-v3',
-  'soulcode-cdn-v1',   'soulcode-cdn-v2',   'soulcode-cdn-v3'
+  'soulcode-shell-v1', 'soulcode-shell-v2', 'soulcode-shell-v3', 'soulcode-shell-v4', 'soulcode-shell-v5',
+  'soulcode-cdn-v1',   'soulcode-cdn-v2',   'soulcode-cdn-v3',   'soulcode-cdn-v4',   'soulcode-cdn-v5'
 ];
 
 // Shell assets to pre-cache on install
@@ -49,7 +49,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// ── ACTIVATE: clean old caches + claim clients
+// ── ACTIVATE: clean ALL old caches + claim clients
 self.addEventListener('activate', event => {
   console.log(`[SW v${VERSION}] Activating...`);
   event.waitUntil(
@@ -167,14 +167,14 @@ self.addEventListener('push', event => {
 
   event.waitUntil(
     self.registration.showNotification(data.title || 'SoulCode ✦', {
-      body:    data.body    || 'Your numerology insight is ready.',
-      icon:    './icon-192.png',
-      badge:   './icon-96.png',
-      vibrate: [200, 80, 200, 80, 300],
-      tag:     'soulcode-push',
+      body:     data.body    || 'Your numerology insight is ready.',
+      icon:     './icon-192.png',
+      badge:    './icon-96.png',
+      vibrate:  [200, 80, 200, 80, 300],
+      tag:      'soulcode-push',
       renotify: true,
-      data:    { url: data.url || './index.html' },
-      actions: [
+      data:     { url: data.url || './index.html' },
+      actions:  [
         { action: 'open',    title: '✦ Open SoulCode' },
         { action: 'dismiss', title: 'Dismiss' }
       ]
@@ -217,11 +217,11 @@ self.addEventListener('message', event => {
   }
 
   if (type === 'CLEAR_ALL_CACHES') {
-    caches.keys().then(keys =>
-      Promise.all(keys.map(k => caches.delete(k)))
-    ).then(() => event.source?.postMessage({ type: 'ALL_CACHES_CLEARED' }));
+    caches.keys()
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => event.source?.postMessage({ type: 'ALL_CACHES_CLEARED' }));
     return;
   }
 });
 
-console.log(`[SW v${VERSION}] SoulCode Service Worker loaded ✦`); 
+console.log(`[SW v${VERSION}] SoulCode Service Worker loaded ✦`);
