@@ -1,7 +1,7 @@
 {
   "name": "SoulCode — Numerology Calculator",
   "short_name": "SoulCode",
-  "description": "Chaldean, Pythagorean, Vedic & Kabbalistic numerology with 65 features — Life Path, Extended Analysis, Angel Numbers, Special Calculators, Prediction Report and Pro subscription.",
+  "description": "Chaldean, Pythagorean, Vedic & Kabbalistic numerology with 65 features — Life Path, Extended Analysis, Angel Numbers, Special Calculators, Prediction Report and Pro subscription via UPI.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -63,7 +63,7 @@
     {
       "name": "Upgrade to Pro",
       "short_name": "Pro",
-      "description": "Unlock all 65 features with SoulCode Pro — ₹1001/month",
+      "description": "Unlock all 65 features with SoulCode Pro — ₹999/month via UPI",
       "url": "./index.html#upgrade",
       "icons": [{ "src": "icon-96.png", "sizes": "96x96" }]
     }
