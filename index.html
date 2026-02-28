@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SoulCode — Numerology Calculator</title>
+<meta name="application-name" content="SoulCode">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SoulCode">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#b07fff" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#7f50ff" media="(prefers-color-scheme: light)">
+<meta name="description" content="SoulCode — Chaldean, Pythagorean, Vedic &amp; Kabbalistic numerology calculator with 65 features, angel numbers, compound numbers, full prediction report and export.">
+<meta property="og:title" content="SoulCode — Numerology Calculator">
+<meta property="og:description" content="Calculate your Life Path, Expression, Soul Urge and 40+ numerological numbers across 4 ancient systems.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="icon-512.png">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="96x96" href="icon-96.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="96x96" href="icon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="apple-touch-startup-image" href="icon-512.png">
+<style>body { padding-bottom: env(safe-area-inset-bottom); padding-top: env(safe-area-inset-top); }</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0c1a;--surface:rgba(255,255,255,0.06);--surface2:rgba(255,255,255,0.10);--border:rgba(255,255,255,0.12);--text:#f0ecff;--text2:#a89ec4;--accent:#b07fff;--accent2:#7fd8ff;--accent3:#ff7fca;--gold:#ffd770;--glass:blur(18px);--radius:20px;--shadow:0 8px 40px rgba(0,0,0,0.5);--glow:0 0 40px rgba(176,127,255,0.18);--tr:0.3s cubic-bezier(0.4,0,0.2,1);}
+[data-theme="light"]{--bg:#f0eeff;--surface:rgba(255,255,255,0.55);--surface2:rgba(255,255,255,0.80);--border:rgba(100,80,200,0.18);--text:#1a1230;--text2:#5a4a8a;--shadow:0 8px 40px rgba(80,60,180,0.12);--glow:0 0 40px rgba(176,127,255,0.10);}
+[data-theme="oled"]{--bg:#000;--surface:rgba(255,255,255,0.04);--surface2:rgba(255,255,255,0.07);--border:rgba(255,255,255,0.08);--text:#fff;--text2:#888899;--shadow:0 8px 40px rgba(0,0,0,0.9);--glow:0 0 40px rgba(176,127,255,0.12);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;transition:background var(--tr),color var(--tr);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 60% at 20% 20%,rgba(176,127,255,0.18) 0%,transparent 70%),radial-gradient(ellipse 50% 50% at 80% 80%,rgba(127,216,255,0.12) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 60% 10%,rgba(255,127,202,0.10) 0%,transparent 70%);pointer-events:none;z-index:0;animation:bgS 12s ease-in-out infinite alternate;}
+[data-theme="light"] body::before{background:radial-gradient(ellipse 60% 60% at 20% 20%,rgba(176,127,255,0.15) 0%,transparent 70%),radial-gradient(ellipse 50% 50% at 80% 80%,rgba(100,180,255,0.10) 0%,transparent 70%);}
+[data-theme="oled"] body::before{display:none;}
+@keyframes bgS{from{opacity:1;transform:scale(1);}to{opacity:0.8;transform:scale(1.05);}}
+.wrapper{width:100%;max-width:700px;padding:24px 16px 0;position:relative;z-index:1;display:flex;flex-direction:column;gap:20px;flex:1;}
+.theme-bar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.theme-btn{padding:7px 18px;border-radius:40px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;backdrop-filter:var(--glass);transition:all var(--tr);letter-spacing:0.04em;}
+.theme-btn:hover,.theme-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 0 18px rgba(176,127,255,0.5);}
+.header{text-align:center;background:var(--surface);backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:32px 24px 28px;box-shadow:var(--shadow),var(--glow);}
+.header .star{font-size:28px;margin-bottom:10px;display:block;animation:spin 8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.header h1{font-size:clamp(28px,7vw,44px);font-weight:900;letter-spacing:-0.02em;line-height:1.1;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.header p{color:var(--text2);font-size:12px;margin-top:8px;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;opacity:0.7;}
+.card{background:var(--surface);backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);transition:all var(--tr);}
+.card:hover{box-shadow:var(--shadow),var(--glow);}
+.card-title{font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.card-title::before{content:'';display:inline-block;width:20px;height:2px;background:var(--accent);border-radius:2px;}
+.input-group{display:flex;flex-direction:column;gap:16px;}
+.field-block{display:flex;flex-direction:column;padding:18px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;transition:border-color var(--tr);}
+.field-block:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,127,255,0.10);}
+.inp-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:block;}
+.field-hint{font-size:11px;color:var(--text2);margin-top:8px;line-height:1.5;opacity:0.8;}
+input[type="text"],input[type="date"]{width:100%;padding:13px 16px;border-radius:10px;border:1.5px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;outline:none;transition:all var(--tr);}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(176,127,255,0.15);}
+input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.7);cursor:pointer;}
+.system-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:0;}
+@media(min-width:420px){.system-tabs{grid-template-columns:repeat(4,1fr);}}
+.sys-tab{padding:10px 8px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all var(--tr);letter-spacing:0.05em;backdrop-filter:var(--glass);}
+.sys-tab:hover{border-color:var(--accent);color:var(--accent);}
+.sys-tab.active{background:linear-gradient(135deg,rgba(176,127,255,0.25),rgba(127,216,255,0.15));border-color:var(--accent);color:var(--text);box-shadow:0 0 16px rgba(176,127,255,0.2);}
+.calc-btn{width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--accent),#7f50ff);color:#fff;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;transition:all var(--tr);box-shadow:0 4px 24px rgba(176,127,255,0.4);}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(176,127,255,0.5);}
+.calc-btn:active{transform:translateY(0);}
+.clear-btn{width:100%;padding:12px;border-radius:14px;border:1.5px solid var(--border);background:transparent;color:var(--text2);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all var(--tr);margin-top:8px;}
+.clear-btn:hover{background:rgba(255,80,80,0.12);border-color:#ff5050;color:#ff5050;box-shadow:0 0 16px rgba(255,80,80,0.2);}
+.clear-btn:active{transform:scale(0.98);}
+.results-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+@media(min-width:480px){.results-grid{grid-template-columns:repeat(3,1fr);}}
+.num-card{background:var(--surface);backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;transition:all var(--tr);cursor:default;position:relative;overflow:hidden;}
+.num-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(176,127,255,0.08),transparent);opacity:0;transition:opacity var(--tr);}
+.num-card:hover::before{opacity:1;}
+.num-card:hover{transform:translateY(-3px);box-shadow:var(--shadow),0 0 24px rgba(176,127,255,0.15);border-color:var(--accent);}
+.num-card .num-label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
+.num-card .num-value{font-size:36px;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.num-card .num-meaning{font-size:11px;color:var(--text2);line-height:1.4;}
+.interp-item{padding:16px;border-radius:14px;border:1px solid var(--border);background:var(--surface);backdrop-filter:var(--glass);margin-bottom:10px;transition:all var(--tr);}
+.interp-item:hover{border-color:rgba(176,127,255,0.3);}
+.interp-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.interp-body{font-size:13px;color:var(--text2);line-height:1.7;}
+.lucky-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.lucky-item{background:var(--surface);backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:12px;padding:14px;transition:all var(--tr);}
+.lucky-item:hover{border-color:var(--accent);}
+.lucky-item .lucky-label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:6px;}
+.lucky-item .lucky-val{font-size:15px;font-weight:700;color:var(--gold);}
+.compat-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.compat-num{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;border:2px solid var(--border);transition:all var(--tr);}
+.compat-num.high{border-color:#4ade80;color:#4ade80;}
+.compat-num.mid{border-color:var(--gold);color:var(--gold);}
+.compat-num.low{border-color:#f87171;color:#f87171;}
+#results-container{display:none;}
+#results-container.show{display:flex;flex-direction:column;gap:20px;}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;}
+.badge-purple{background:rgba(176,127,255,0.15);color:var(--accent);border:1px solid rgba(176,127,255,0.3);}
+.badge-blue{background:rgba(127,216,255,0.15);color:var(--accent2);border:1px solid rgba(127,216,255,0.3);}
+.badge-gold{background:rgba(255,215,112,0.15);color:var(--gold);border:1px solid rgba(255,215,112,0.3);}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.section-icon{width:36px;height:36px;border-radius:10px;background:rgba(176,127,255,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.section-title{font-size:15px;font-weight:700;color:var(--text);}
+.section-sub{font-size:11px;color:var(--text2);}
+.prog-bar{width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:8px;}
+.prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.8s cubic-bezier(0.4,0,0.2,1);}
+.karmic{color:#f87171!important;}
+.master{color:var(--gold)!important;}
+.features-list{display:flex;flex-wrap:wrap;gap:6px;}
+.feature-tag{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;background:var(--surface2);border:1px solid var(--border);color:var(--text2);transition:all var(--tr);}
+.feature-tag:hover{border-color:var(--accent);color:var(--accent);}
+.fade-in{animation:fadeIn 0.5s ease forwards;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.ext-feature-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;transition:all var(--tr);}
+.ext-feature-card:hover{border-color:rgba(176,127,255,0.4);box-shadow:0 4px 24px rgba(176,127,255,0.1);}
+.ext-feature-header{display:flex;align-items:center;gap:12px;padding:16px;background:linear-gradient(135deg,rgba(176,127,255,0.08),rgba(127,216,255,0.04));border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.ext-feature-header:hover{background:linear-gradient(135deg,rgba(176,127,255,0.14),rgba(127,216,255,0.08));}
+.ext-num-badge{min-width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#fff;flex-shrink:0;}
+.ext-feature-title{font-size:14px;font-weight:700;color:var(--text);}
+.ext-feature-subtitle{font-size:11px;color:var(--accent);font-weight:600;margin-top:2px;}
+.ext-feature-arrow{margin-left:auto;color:var(--text2);font-size:14px;transition:transform var(--tr);}
+.ext-feature-arrow.open{transform:rotate(180deg);}
+.ext-feature-body{padding:16px;display:none;}
+.ext-feature-body.open{display:block;}
+.ext-detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:400px){.ext-detail-grid{grid-template-columns:1fr;}}
+.ext-detail-item{background:var(--surface2);border-radius:10px;padding:12px;}
+.ext-detail-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:4px;}
+.ext-detail-value{font-size:13px;color:var(--text);font-weight:600;line-height:1.4;}
+.ext-interpretation{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:12px;}
+.ext-advice{background:linear-gradient(135deg,rgba(176,127,255,0.1),rgba(127,216,255,0.06));border:1px solid rgba(176,127,255,0.2);border-radius:10px;padding:12px;font-size:12px;color:var(--text);line-height:1.7;}
+.ext-advice-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.ext-tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600;margin:2px;letter-spacing:0.05em;}
+.ext-tag-green{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3);}
+.ext-tag-red{background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3);}
+.ext-tag-gold{background:rgba(255,215,112,0.15);color:var(--gold);border:1px solid rgba(255,215,112,0.3);}
+.ext-tag-blue{background:rgba(127,216,255,0.15);color:var(--accent2);border:1px solid rgba(127,216,255,0.3);}
+.angel-card{background:linear-gradient(135deg,rgba(176,127,255,0.12),rgba(127,216,255,0.08));border:1px solid rgba(176,127,255,0.25);border-radius:14px;padding:14px;margin-bottom:10px;transition:all var(--tr);}
+.angel-card:hover{border-color:var(--accent);box-shadow:0 0 20px rgba(176,127,255,0.15);}
+.angel-num{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.compound-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;transition:all var(--tr);}
+.compound-card:hover{border-color:var(--accent);}
+.power-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:420px){.power-grid{grid-template-columns:1fr;}}
+.power-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;transition:all var(--tr);}
+.power-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.power-label{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:6px;}
+.power-num{font-size:42px;font-weight:900;line-height:1;}
+.power-desc{font-size:11px;color:var(--text2);margin-top:6px;line-height:1.5;}
+.export-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;backdrop-filter:var(--glass);transition:all var(--tr);letter-spacing:0.04em;}
+.export-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow),var(--glow);}
+.pred-section{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border);}
+.pred-section:last-child{border-bottom:none;margin-bottom:0;}
+.pred-section-title{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:8px;}
+.pred-text{font-size:13px;color:var(--text2);line-height:1.8;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+footer{position:relative;z-index:1;text-align:center;padding:28px 16px 24px;font-size:13px;color:var(--text2);font-weight:400;line-height:1.8;}
+footer span{color:var(--accent);font-weight:600;}
+/* ── SUBSCRIPTION STYLES ── */
+.sub-bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(176,127,255,0.12),rgba(127,216,255,0.08));border:1.5px solid rgba(176,127,255,0.3);border-radius:14px;padding:10px 16px;margin-bottom:14px;gap:10px;flex-wrap:wrap;}
+.sub-bar-free{font-size:12px;color:var(--text2);}
+.sub-bar-free strong{color:var(--accent);font-size:13px;}
+.sub-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:0.04em;}
+.sub-badge.free{background:rgba(176,127,255,0.15);color:var(--accent);}
+.sub-badge.pro{background:linear-gradient(135deg,#b07fff,#7fd8ff);color:#fff;box-shadow:0 2px 12px rgba(176,127,255,0.4);}
+.upgrade-btn{padding:7px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,#b07fff,#7f50ff);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.04em;transition:all var(--tr);white-space:nowrap;}
+.upgrade-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(176,127,255,0.5);}
+.premium-lock{position:relative;filter:blur(4px) brightness(0.5);pointer-events:none;user-select:none;}
+.lock-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;gap:8px;cursor:pointer;}
+.lock-overlay-inner{background:rgba(15,12,26,0.85);border:1.5px solid rgba(176,127,255,0.5);backdrop-filter:blur(12px);border-radius:16px;padding:20px 28px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);}
+.lock-icon{font-size:32px;margin-bottom:6px;}
+.lock-title{font-size:15px;font-weight:800;color:#f0ecff;margin-bottom:4px;font-family:'Outfit',sans-serif;}
+.lock-sub{font-size:12px;color:#a89ec4;margin-bottom:14px;line-height:1.5;font-family:'Outfit',sans-serif;}
+.lock-cta{display:inline-block;padding:9px 22px;border-radius:20px;background:linear-gradient(135deg,#b07fff,#7f50ff);color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:none;letter-spacing:0.04em;box-shadow:0 4px 16px rgba(176,127,255,0.5);}
+.lock-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(176,127,255,0.6);}
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:9990;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--card);border:1.5px solid rgba(176,127,255,0.35);border-radius:24px;padding:28px 24px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,0.6),0 0 60px rgba(176,127,255,0.15);}
+.modal-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:-0.01em;}
+.modal-sub{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6;}
+.plan-card{border:1.5px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all var(--tr);}
+.plan-card:hover,.plan-card.selected{border-color:var(--accent);background:rgba(176,127,255,0.08);}
+.plan-price{font-size:26px;font-weight:900;color:var(--accent);}
+.plan-price span{font-size:13px;font-weight:500;color:var(--text2);}
+.plan-features{margin-top:10px;font-size:12px;color:var(--text2);line-height:2;}
+.pay-section{margin-top:16px;}
+.pay-title{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);margin-bottom:10px;}
+.pay-method{display:flex;align-items:center;gap:12px;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all var(--tr);}
+.pay-method:hover,.pay-method.active{border-color:var(--accent);background:rgba(176,127,255,0.08);}
+.pay-method-icon{font-size:26px;width:40px;text-align:center;}
+.pay-method-label{font-size:14px;font-weight:700;color:var(--text);}
+.pay-method-desc{font-size:11px;color:var(--text2);}
+.pay-details{background:rgba(176,127,255,0.07);border:1.5px solid rgba(176,127,255,0.2);border-radius:14px;padding:16px;margin-top:12px;display:none;}
+.pay-details.show{display:block;}
+.upi-id{font-size:18px;font-weight:800;color:var(--accent);letter-spacing:0.06em;margin:8px 0;font-family:'Outfit',sans-serif;}
+.copy-btn{padding:6px 14px;border-radius:10px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all var(--tr);}
+.copy-btn:hover{background:var(--accent);color:#fff;}
+.qr-placeholder{background:rgba(255,255,255,0.05);border:1.5px dashed rgba(176,127,255,0.3);border-radius:12px;padding:20px;text-align:center;font-size:12px;color:var(--text2);margin-top:12px;}
+.verify-field{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--border);background:rgba(0,0,0,0.2);color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;margin-top:10px;outline:none;box-sizing:border-box;}
+.verify-field:focus{border-color:var(--accent);}
+.verify-btn{width:100%;padding:13px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--accent),#7f50ff);color:#fff;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;letter-spacing:0.04em;transition:all var(--tr);}
+.verify-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(176,127,255,0.5);}
+.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;font-size:20px;color:var(--text2);cursor:pointer;padding:4px 8px;}
+.free-limit-note{font-size:11px;color:var(--text2);background:rgba(176,127,255,0.06);border:1px solid rgba(176,127,255,0.15);border-radius:8px;padding:8px 12px;margin-top:8px;line-height:1.6;}
+.special-free-badge{display:inline-block;font-size:10px;font-weight:700;color:#4ade80;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.25);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:middle;}
+.special-premium-badge{display:inline-block;font-size:10px;font-weight:700;color:#b07fff;background:rgba(176,127,255,0.12);border:1px solid rgba(176,127,255,0.25);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:middle;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="theme-bar">
+    <button class="theme-btn active" onclick="setTheme('dark')">&#127769; Dark</button>
+    <button class="theme-btn" onclick="setTheme('light')">&#9728;&#65039; Light</button>
+    <button class="theme-btn" onclick="setTheme('oled')">&#11035; OLED</button>
+    <button class="upgrade-btn" id="headerSubBtn" onclick="openSubModal()" style="margin-left:auto;">&#9733; Free Plan &mdash; Upgrade</button>
+  </div>
+  <div class="card header">
+    <span class="star">&#10022;</span>
+    <h1>SoulCode</h1>
+    <p>Chaldean &middot; Pythagorean &middot; Vedic &middot; Kabbalistic</p>
+    <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+      <span class="badge badge-purple">&#10022; 65 Features</span>
+      <span class="badge badge-blue">4 Systems</span>
+      <span class="badge badge-gold">Deep Insights</span>
+    </div>
+    <div id="subStatusBanner" style="margin-top:14px;background:rgba(176,127,255,0.08);border:1.5px solid rgba(176,127,255,0.25);border-radius:12px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div id="subBannerLabel" style="font-size:13px;font-weight:700;color:var(--accent);">✦ Free Plan</div>
+        <div id="subBannerDesc" style="font-size:11px;color:var(--text2);margin-top:2px;">Core numbers unlocked · Upgrade for full analysis</div>
+      </div>
+      <button id="subBannerBtn" class="upgrade-btn" onclick="openSubModal()">Upgrade — ₹1001/month</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Personal Data</div>
+    <div class="input-group">
+      <div class="field-block">
+        <label class="inp-label" for="nameInput">&#9997; Full Birth Name</label>
+        <input type="text" id="nameInput" placeholder="e.g. Manik Roy" maxlength="80" autocomplete="off">
+        <div class="field-hint">Enter your complete birth name exactly as on your birth certificate</div>
+      </div>
+      <div class="field-block">
+        <label class="inp-label" for="dobInput">&#128197; Date of Birth</label>
+        <input type="date" id="dobInput">
+        <div class="field-hint">Used to calculate Life Path, Personal Year &amp; cycle numbers</div>
+      </div>
+      <div class="field-block">
+        <label class="inp-label">&#10024; Numerology System</label>
+        <div class="system-tabs">
+          <button class="sys-tab active" data-sys="chaldean" onclick="selectSystem('chaldean',this)">Chaldean</button>
+          <button class="sys-tab" data-sys="pythagorean" onclick="selectSystem('pythagorean',this)">Pythagorean</button>
+          <button class="sys-tab" data-sys="vedic" onclick="selectSystem('vedic',this)">Vedic</button>
+          <button class="sys-tab" data-sys="kabbalah" onclick="selectSystem('kabbalah',this)">Kabbalah</button>
+        </div>
+        <div class="field-hint">Each system uses a different letter-to-number mapping tradition</div>
+      </div>
+      <button class="calc-btn" onclick="calculate()">&#10022; Calculate My Numbers &#10022;</button>
+      <button class="clear-btn" onclick="clearAllInputs()">&#8635; Clear All Fields</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Special Calculators <span style="font-size:10px;color:var(--accent2);font-weight:500;letter-spacing:0.05em;margin-left:6px;text-transform:none;">Works standalone</span></div>
+    <div class="input-group">
+      <div class="field-block"><label class="inp-label">&#9999;&#65039; Name Change Analysis <span class="special-free-badge">FREE</span></label><input type="text" id="newNameInput" placeholder="e.g. Manik Kumar Roy" maxlength="80" autocomplete="off"><div class="field-hint">New or married name &mdash; compare vibration shifts</div></div>
+      <div class="field-block"><label class="inp-label">&#127968; Home Address <span class="special-free-badge">FREE</span></label><input type="text" id="addressInput" placeholder="e.g. 42 Maple Street" maxlength="120" autocomplete="off"><div class="field-hint">Street number + name for home vibration reading</div></div>
+      <div class="field-block"><label class="inp-label">&#128222; Telephone / Mobile Number <span class="special-free-badge">FREE</span></label><input type="text" id="phoneInput" placeholder="e.g. +91 98765 43210" maxlength="20" autocomplete="off"></div>
+      <div class="field-block"><label class="inp-label">&#128663; Car / Vehicle Plate <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="plateInput" placeholder="e.g. WB 02 AB 1234" maxlength="20" autocomplete="off"></div>
+      <div class="field-block"><label class="inp-label">&#128230; Product Serial Number <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="serialInput" placeholder="e.g. SN-2024-XR7-9901" maxlength="40" autocomplete="off"></div>
+      <div class="field-block"><label class="inp-label">&#128682; Room / Flat / House Number <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="roomInput" placeholder="e.g. 7B or 301" maxlength="20" autocomplete="off"></div>
+      <div class="field-block"><label class="inp-label">&#127970; Business Name <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="businessInput" placeholder="e.g. Manik Enterprises" maxlength="80" autocomplete="off"><div class="field-hint">Discover the vibration &amp; fortune energy of your brand</div></div>
+      <div class="field-block"><label class="inp-label">&#127381; Product Name <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="productInput" placeholder="e.g. SoulCode Pro" maxlength="80" autocomplete="off"><div class="field-hint">Is your product name aligned with success &amp; attraction?</div></div>
+      <div class="field-block"><label class="inp-label">&#128118; Child Name <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="childInput" placeholder="e.g. Aryan Roy" maxlength="80" autocomplete="off"><div class="field-hint">Full name of your child for destiny &amp; soul reading</div></div>
+      <div class="field-block"><label class="inp-label">&#127963; City / Place Name <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="cityInput" placeholder="e.g. Kolkata" maxlength="80" autocomplete="off"><div class="field-hint">Vibration of a city, town or sacred place</div></div>
+      <div class="field-block"><label class="inp-label">&#128148; Relationship / Sex Number <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="partnerInput" placeholder="e.g. partner's full name" maxlength="80" autocomplete="off"><div class="field-hint">Enter a partner's name to reveal your intimate compatibility &amp; magnetic attraction number</div></div>
+      <div class="field-block"><label class="inp-label">&#127860; Favourite Food / Dish <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="foodInput" placeholder="e.g. Biryani" maxlength="80" autocomplete="off"><div class="field-hint">Does your favourite food vibrate with your energy?</div></div>
+      <div class="field-block"><label class="inp-label">&#128101; Friend Name <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="friendInput" placeholder="e.g. Rohit Sharma" maxlength="80" autocomplete="off"><div class="field-hint">Friendship compatibility &amp; soul connection reading</div></div>
+      <div class="field-block"><label class="inp-label">&#128084; Wedding Date <span class="special-premium-badge">&#9733; PRO</span></label><input type="date" id="weddingInput"><div class="field-hint">Discover the vibrational destiny of your marriage date</div></div>
+      <div class="field-block"><label class="inp-label">&#128188; Company / Employer Name <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="employerInput" placeholder="e.g. Tata Consultancy Services" maxlength="80" autocomplete="off"><div class="field-hint">Is your workplace vibration aligned with your personal energy?</div></div>
+      <div class="field-block"><label class="inp-label">&#127911; Favourite Song / Album <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="songInput" placeholder="e.g. Bohemian Rhapsody" maxlength="80" autocomplete="off"><div class="field-hint">Numerological energy of music that resonates with your soul</div></div>
+      <div class="field-block"><label class="inp-label">&#128012; Spirit Animal / Totem <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="animalInput" placeholder="e.g. Eagle" maxlength="80" autocomplete="off"><div class="field-hint">Discover the numerological power of your spirit animal</div></div>
+      <div class="field-block"><label class="inp-label">&#127381; Dream / Goal <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="dreamInput" placeholder="e.g. Write a bestselling novel" maxlength="120" autocomplete="off"><div class="field-hint">Vibrational alignment of your deepest dream or life goal</div></div>
+      <div class="field-block"><label class="inp-label">&#128214; Book / Movie Title <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="bookInput" placeholder="e.g. The Alchemist" maxlength="80" autocomplete="off"><div class="field-hint">What does this title's vibration reveal about its message?</div></div>
+      <div class="field-block"><label class="inp-label">&#127881; Event / Occasion Date <span class="special-premium-badge">&#9733; PRO</span></label><input type="date" id="eventInput"><div class="field-hint">Any important date &mdash; exam, interview, launch, ceremony</div></div>
+      <div class="field-block"><label class="inp-label">&#128167; Colour / Gemstone <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="colourInput" placeholder="e.g. Emerald Green or Ruby" maxlength="80" autocomplete="off"><div class="field-hint">Numerological power of a colour or gemstone in your life</div></div>
+      <div class="field-block"><label class="inp-label">&#128336; Lucky Time / Hour <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="timeInput" placeholder="e.g. 11:11 or 7:00 AM" maxlength="20" autocomplete="off"><div class="field-hint">Numerological significance of a time that keeps appearing</div></div>
+      <div class="field-block"><label class="inp-label">&#128218; Your Mantra / Affirmation <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="mantraInput" placeholder="e.g. I am abundant and free" maxlength="120" autocomplete="off"><div class="field-hint">Vibrational power of your chosen mantra or affirmation</div></div>
+      <div class="field-block"><label class="inp-label">&#127758; Country Name <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="countryInput" placeholder="e.g. India" maxlength="80" autocomplete="off"><div class="field-hint">National vibration &mdash; how a country's energy affects you</div></div>
+      <div class="field-block"><label class="inp-label">&#127968; Dream Home Style <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="homeStyleInput" placeholder="e.g. Victorian Cottage" maxlength="80" autocomplete="off"><div class="field-hint">Does your dream home style match your soul's vibration?</div></div>
+      <div class="field-block"><label class="inp-label">&#128736; Career / Profession <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="careerInput" placeholder="e.g. Software Engineer" maxlength="80" autocomplete="off"><div class="field-hint">Is your career path numerologically aligned with your destiny?</div></div>
+      <div class="field-block"><label class="inp-label">&#128138; Social Media Handle <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="handleInput" placeholder="e.g. @manikroy" maxlength="50" autocomplete="off"><div class="field-hint">The vibrational energy your online identity projects to the world</div></div>
+      <div class="field-block"><label class="inp-label">&#128293; Password Vibration <span class="special-premium-badge">&#9733; PRO</span></label><input type="text" id="passwordInput" placeholder="e.g. 2024" maxlength="40" autocomplete="off" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"><div class="field-hint">Enter digits only — hidden vibration of your password number (do not use real passwords)</div></div>
+      <button class="calc-btn" onclick="calculateSpecial()" style="background:linear-gradient(135deg,#7fd8ff,#7f50ff);">&#10022; Calculate Special Numbers &#10022;</button>
+    </div>
+  </div>
+
+  <div id="specialResultsCard" class="card fade-in" style="display:none;">
+    <div class="section-header">
+      <div class="section-icon">&#10024;</div>
+      <div><div class="section-title">Special Number Readings</div><div class="section-sub">Address &middot; Phone &middot; Plate &middot; Serial &middot; Room &middot; Name Change</div></div>
+    </div>
+    <div id="specialGrid"></div>
+  </div>
+
+  <div id="results-container">
+    <div class="card fade-in">
+      <div class="section-header"><div class="section-icon">&#128290;</div><div><div class="section-title">Core Numbers</div><div class="section-sub" id="sysNameLabel">System</div></div></div>
+      <div class="results-grid" id="coreGrid"></div>
+    </div>
+    <div class="card fade-in">
+      <div class="section-header"><div class="section-icon">&#128214;</div><div><div class="section-title">Core Interpretations</div><div class="section-sub">Meaning of your primary numbers</div></div></div>
+      <div id="interpPanel"></div>
+    </div>
+    <!-- PREMIUM SECTION WRAPPER -->
+    <div id="premiumResultsWrap">
+    <div class="card fade-in">
+      <div class="section-header"><div class="section-icon">&#9889;</div><div><div class="section-title">Extended Analysis &mdash; Detailed Report</div><div class="section-sub">Click any feature to expand the full reading</div></div></div>
+      <div id="extendedGrid"></div>
+    </div>
+    <div class="card fade-in">
+      <div class="section-header"><div class="section-icon">&#127808;</div><div><div class="section-title">Lucky Elements</div><div class="section-sub">Based on your Life Path</div></div></div>
+      <div class="lucky-grid" id="luckyGrid"></div>
+    </div>
+    <div class="card fade-in">
+      <div class="section-header"><div class="section-icon">&#128171;</div><div><div class="section-title">Number Compatibility</div><div class="section-sub">With your Life Path number</div></div></div>
+      <div class="compat-grid" id="compatGrid"></div>
+      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:#4ade80;font-weight:600;">&#9679; High</span>
+        <span style="font-size:11px;color:var(--gold);font-weight:600;">&#9679; Medium</span>
+        <span style="font-size:11px;color:#f87171;font-weight:600;">&#9679; Low</span>
+      </div>
+    </div>
+    <div class="card fade-in">
+      <div class="section-header"><div class="section-icon">&#127754;</div><div><div class="section-title">Elemental Balance</div><div class="section-sub">Fire &middot; Earth &middot; Air &middot; Water</div></div></div>
+      <div id="elemGrid"></div>
+    </div>
+    <div class="card fade-in" id="angelCard" style="display:none;">
+      <div class="section-header"><div class="section-icon">&#128140;</div><div><div class="section-title">Angel Number Meanings</div><div class="section-sub">Divine messages in your numbers</div></div></div>
+      <div id="angelGrid"></div>
+    </div>
+    <div class="card fade-in" id="compoundCard" style="display:none;">
+      <div class="section-header"><div class="section-icon">&#128161;</div><div><div class="section-title">Compound Number Meanings</div><div class="section-sub">Chaldean double-digit vibrations</div></div></div>
+      <div id="compoundGrid"></div>
+    </div>
+    <div class="card fade-in">
+      <div class="section-header"><div class="section-icon">&#127775;</div><div><div class="section-title">Power Numbers</div><div class="section-sub">Travel &middot; Success &middot; Money</div></div></div>
+      <div id="powerGrid"></div>
+    </div>
+    <div class="card fade-in" id="predCard" style="display:none;">
+      <div class="section-header"><div class="section-icon">&#128302;</div><div><div class="section-title">Full Prediction Report</div><div class="section-sub">Comprehensive life reading</div></div></div>
+      <div id="predGrid"></div>
+      <div style="margin-top:20px;">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">&#11015; Export Report</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <button class="export-btn" onclick="exportTXT()" style="background:linear-gradient(135deg,rgba(176,127,255,0.2),rgba(127,216,255,0.15));border:1.5px solid var(--accent);">&#128196; Export TXT</button>
+          <button class="export-btn" onclick="exportPDF()" style="background:linear-gradient(135deg,rgba(255,127,202,0.2),rgba(176,127,255,0.15));border:1.5px solid var(--accent3);">&#128214; Export PDF</button>
+          <button class="export-btn" onclick="exportDOCX()" style="background:linear-gradient(135deg,rgba(127,216,255,0.2),rgba(176,127,255,0.15));border:1.5px solid var(--accent2);">&#128196; Export DOCX</button>
+        </div>
+      </div>
+    </div>
+    </div><!-- /premiumResultsWrap -->
+    <div class="card fade-in">
+      <div class="card-title">65 Features</div>
+      <div class="features-list">
+        <span class="feature-tag">Life Path</span><span class="feature-tag">Destiny/Expression</span><span class="feature-tag">Soul Urge</span><span class="feature-tag">Personality</span><span class="feature-tag">Birthday</span><span class="feature-tag">Karmic Debt</span><span class="feature-tag">Master Numbers</span><span class="feature-tag">Personal Year</span><span class="feature-tag">Personal Month</span><span class="feature-tag">Personal Day</span><span class="feature-tag">Pinnacle Cycles</span><span class="feature-tag">Challenges</span><span class="feature-tag">Hidden Passion</span><span class="feature-tag">Subconscious Self</span><span class="feature-tag">Balance Number</span><span class="feature-tag">Rational Thought</span><span class="feature-tag">Planes of Expression</span><span class="feature-tag">Maturity Number</span><span class="feature-tag">Achievement Number</span><span class="feature-tag">Lucky Day</span><span class="feature-tag">Lucky Colors</span><span class="feature-tag">Lucky Gems</span><span class="feature-tag">Lucky Numbers</span><span class="feature-tag">Compatibility</span><span class="feature-tag">Elemental Balance</span><span class="feature-tag">Karmic Lessons</span><span class="feature-tag">Bridge Number</span><span class="feature-tag">Minor Expression</span><span class="feature-tag">Minor Soul Urge</span><span class="feature-tag">Power Name</span><span class="feature-tag">Name Change</span><span class="feature-tag">Home Address</span><span class="feature-tag">Phone Number</span><span class="feature-tag">Car Plate</span><span class="feature-tag">Serial Number</span><span class="feature-tag">Room Number</span><span class="feature-tag">Angel Numbers</span><span class="feature-tag">Compound Numbers</span><span class="feature-tag">Single Meanings</span><span class="feature-tag">Travel Number</span><span class="feature-tag">Success Number</span><span class="feature-tag">Money Number</span><span class="feature-tag">Full Prediction</span><span class="feature-tag">Business Name</span><span class="feature-tag">Product Name</span><span class="feature-tag">Child Name</span><span class="feature-tag">City Vibration</span><span class="feature-tag">Sex / Attraction</span><span class="feature-tag">Food Number</span><span class="feature-tag">Friend Compatibility</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong style="color:var(--text);font-size:15px;">&#10022; SoulCode</strong><br>
+  &copy; <span id="footerYear"></span> Manik Roy &middot; All Rights Reserved<br>
+  <span style="font-size:11px;color:var(--text2);letter-spacing:0.08em;">CHALDEAN &middot; PYTHAGOREAN &middot; VEDIC &middot; KABBALISTIC</span>
+</footer>
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA TABLES
+// ═══════════════════════════════════════════════════════
+const SYSTEMS={
+  chaldean:{name:'Chaldean',map:{a:1,b:2,c:3,d:4,e:5,f:8,g:3,h:5,i:1,j:1,k:2,l:3,m:4,n:5,o:7,p:8,q:1,r:2,s:3,t:4,u:6,v:6,w:6,x:5,y:1,z:7}},
+  pythagorean:{name:'Pythagorean',map:{a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8}},
+  vedic:{name:'Vedic (Cheiro)',map:{a:1,b:2,c:3,d:4,e:5,f:8,g:3,h:5,i:1,j:1,k:2,l:3,m:4,n:5,o:7,p:8,q:1,r:2,s:3,t:4,u:6,v:6,w:6,x:5,y:1,z:7}},
+  kabbalah:{name:'Kabbalah',map:{a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:10,k:11,l:12,m:13,n:14,o:15,p:16,q:17,r:18,s:19,t:20,u:21,v:22,w:23,x:24,y:25,z:26}}
+};
+
+const MEANINGS={
+  1:{key:'The Leader',desc:'Independent, pioneering, determined. You are a natural born leader with strong willpower and originality.'},
+  2:{key:'The Diplomat',desc:'Cooperative, sensitive, intuitive. You thrive in partnerships and bring harmony to relationships.'},
+  3:{key:'The Communicator',desc:'Creative, expressive, joyful. You have a natural gift for communication and artistic expression.'},
+  4:{key:'The Builder',desc:'Practical, disciplined, hardworking. You are the foundation builder who creates stability and order.'},
+  5:{key:'The Freedom Seeker',desc:'Adventurous, versatile, dynamic. You crave freedom, change, and exciting experiences.'},
+  6:{key:'The Nurturer',desc:'Responsible, loving, protective. You are the caretaker who creates beauty and harmony in all areas of life.'},
+  7:{key:'The Seeker',desc:'Introspective, analytical, spiritual. You are drawn to knowledge, wisdom, and deeper truths.'},
+  8:{key:'The Powerhouse',desc:'Ambitious, authoritative, resilient. You are destined for material success and executive power.'},
+  9:{key:'The Humanitarian',desc:'Compassionate, generous, idealistic. You are here to serve humanity and inspire others.'},
+  11:{key:'The Visionary (Master)',desc:'Highly intuitive, inspirational, illuminated. You carry the vibration of spiritual awakening.'},
+  22:{key:'The Master Builder',desc:'Practical visionary, highly capable, transformational. You can manifest extraordinary dreams into reality.'},
+  33:{key:'The Master Teacher',desc:'Compassionate, uplifting, healing. You carry the highest spiritual vibration.'}
+};
+
+const LUCKY={
+  1:{days:'Sunday, Monday',colors:'Red, Gold, Orange',gems:'Ruby, Garnet',nums:'1, 10, 19, 28'},
+  2:{days:'Monday, Friday',colors:'White, Silver, Cream',gems:'Pearl, Moonstone',nums:'2, 11, 20, 29'},
+  3:{days:'Thursday, Tuesday',colors:'Yellow, Purple, Pink',gems:'Topaz, Amethyst',nums:'3, 12, 21, 30'},
+  4:{days:'Saturday, Sunday',colors:'Blue, Gray, Green',gems:'Sapphire, Lapis',nums:'4, 13, 22, 31'},
+  5:{days:'Wednesday, Friday',colors:'Aqua, Silver, Mix',gems:'Emerald, Aquamarine',nums:'5, 14, 23'},
+  6:{days:'Friday, Monday',colors:'Blue, Rose, Teal',gems:'Diamond, Turquoise',nums:'6, 15, 24'},
+  7:{days:'Monday, Sunday',colors:'White, Violet, Sea',gems:"Cat's Eye, Jade",nums:'7, 16, 25'},
+  8:{days:'Saturday, Sunday',colors:'Black, Dark Blue, Brown',gems:'Blue Sapphire, Onyx',nums:'8, 17, 26'},
+  9:{days:'Tuesday, Thursday',colors:'Red, Crimson, Rose',gems:'Coral, Bloodstone',nums:'9, 18, 27'},
+  11:{days:'Monday, Sunday',colors:'Silver, White, Indigo',gems:'Moonstone, Clear Quartz',nums:'11, 2, 20'},
+  22:{days:'Saturday, Wednesday',colors:'Earthy tones, Teal',gems:'Obsidian, Turquoise',nums:'22, 4, 8'},
+  33:{days:'Friday, Thursday',colors:'Pink, Gold, White',gems:'Rose Quartz, Diamond',nums:'33, 6, 9'}
+};
+
+const COMPAT={1:[1,3,5,9],2:[2,4,6,8],3:[1,3,6,9],4:[2,4,8,22],5:[1,5,7,9],6:[2,3,6,9],7:[5,7],8:[2,4,8],9:[1,3,6,9]};
+const ELEMENTS={1:'Fire',2:'Water',3:'Fire',4:'Earth',5:'Air',6:'Earth',7:'Water',8:'Earth',9:'Fire',11:'Air',22:'Earth',33:'Fire'};
+const KARMA_DEBT={13:'Laziness overcoming',14:'Misuse of freedom',16:'Ego destruction',19:'Abuse of power'};
+
+const EXT_INTERP={
+  personalYear:{
+    1:{title:'Year of New Beginnings',advice:'Launch boldly. Start the business, begin the relationship, move to the new city. The universe gives you a fresh 9-year mandate. Plant only seeds you wish to harvest.'},
+    2:{title:'Year of Patience & Partnership',advice:'Do not force outcomes. Cultivate relationships, sign agreements, collaborate. Sensitivity peaks — protect your energy from toxic environments.'},
+    3:{title:'Year of Creative Explosion',advice:'Express yourself boldly. Write, speak, perform, create. Social expansion brings unexpected opportunities. Guard against scatter.'},
+    4:{title:'Year of Hard Work & Foundation',advice:'Build systems. No shortcuts. Invest in health, finances, and long-term projects. The effort now multiplies in Year 8.'},
+    5:{title:'Year of Freedom & Change',advice:'Expect the unexpected. Travel, experiment, break free from stagnant structures. Strategic change creates momentum; chaotic change costs.'},
+    6:{title:'Year of Love & Responsibility',advice:'Home, family and community take centre stage. Relationships deepen or resolve. Creative projects thrive. Watch for over-responsibility.'},
+    7:{title:'Year of Inner Work & Wisdom',advice:'Retreat, research, reflect. Not a year for external pushing. Spiritual practice yields extraordinary insight that guides the next cycle.'},
+    8:{title:'Year of Harvest & Power',advice:'Career advances, finances improve, authority roles beckon. The harvest of past effort arrives. Make decisive moves with confidence.'},
+    9:{title:'Year of Completion & Release',advice:'Clear out all that no longer serves. Endings are essential. Your generosity now attracts remarkable returns. Prepare the ground for a new 1-year.'},
+    11:{title:'Master Year of Spiritual Awakening',advice:'Visions and intuitions arrive with uncanny accuracy. Share your gifts boldly. Ground yourself daily — nervous energy is amplified.'},
+    22:{title:'Master Year of Global Building',advice:'The most powerful personal year possible. Think generationally. Pressure is immense but so is the potential for legacy-defining achievement.'},
+    33:{title:'Master Year of Universal Love',advice:'You are called to be a vessel of healing and wisdom. Guard against over-sacrifice. Your wellbeing serves the collective as much as your gifts.'}
+  },
+  lifePath:{
+    1:{strengths:['Leadership','Originality','Determination','Courage','Independence'],challenges:['Ego','Stubbornness','Isolation','Domineering'],career:'Entrepreneurship, management, politics, military, invention',love:'Needs a partner who respects independence. Devoted but requires space to lead.',health:'Heart, spine, eyes. Watch for stress from overwork.',spiritual:'The divine spark of creation. The number of the First Cause.'},
+    2:{strengths:['Diplomacy','Empathy','Intuition','Patience','Harmony'],challenges:['Over-sensitivity','Indecisiveness','Codependency','Mood swings'],career:'Counselling, diplomacy, music, nursing, mediation, psychology',love:'Devoted and romantic. Needs emotional security and deep connection.',health:'Stomach, digestion, hormones. Sensitive to emotional stress.',spiritual:'The divine feminine. Duality and receptivity.'},
+    3:{strengths:['Creativity','Joy','Communication','Optimism','Wit'],challenges:['Scattered energy','Superficiality','Gossip','Extravagance'],career:'Arts, entertainment, writing, speaking, teaching, comedy, design',love:'Playful and romantic. Needs laughter and creativity in love.',health:'Skin, nervous system, throat. Guard against burnout.',spiritual:'The Holy Trinity — mind, body, spirit.'},
+    4:{strengths:['Discipline','Reliability','Practicality','Loyalty','Organization'],challenges:['Rigidity','Stubbornness','Workaholic','Resistance to change'],career:'Engineering, accounting, construction, law, farming, management',love:'Loyal and dependable. Shows love through acts of service and stability.',health:'Bones, joints, teeth. Watch for tension and overwork.',spiritual:'The four elements, four directions. The number of divine order.'},
+    5:{strengths:['Freedom','Adaptability','Versatility','Magnetism','Adventure'],challenges:['Restlessness','Overindulgence','Impulsiveness','Commitment issues'],career:'Sales, travel, media, advertising, entrepreneurship, technology',love:'Needs an exciting, evolving relationship. Loves intensely but needs freedom.',health:'Nervous system, lungs, arms. Prone to anxiety if over-stimulated.',spiritual:'The five senses, the five elements. Number of the perfect human form.'},
+    6:{strengths:['Love','Responsibility','Beauty','Healing','Nurturing'],challenges:['Perfectionism','Self-sacrifice','Meddling','Possessiveness'],career:'Healing arts, teaching, interior design, social work, music, culinary arts',love:'The most loving number. Devoted, romantic and family-oriented.',health:'Heart, back, reproductive system. Avoid emotional stress.',spiritual:'The Star of David. The number of divine love and cosmic beauty.'},
+    7:{strengths:['Wisdom','Analysis','Intuition','Spirituality','Research'],challenges:['Isolation','Aloofness','Scepticism','Secrecy'],career:'Research, philosophy, spirituality, technology, writing, investigation',love:'Selective and private. Needs a deeply intellectual and spiritual partner.',health:'Nervous system, eyes, brain. Prone to overthinking.',spiritual:'7 days, 7 chakras, 7 musical notes. The number of divine wisdom.'},
+    8:{strengths:['Ambition','Authority','Business acumen','Resilience','Justice'],challenges:['Materialism','Ruthlessness','Control issues','Karmic burden'],career:'Finance, law, executive management, real estate, government, banking',love:'Intense and committed. Needs a partner who matches strength and ambition.',health:'Liver, kidneys, bones. Watch for stress and circulatory issues.',spiritual:'The number of karmic balance. Symbol of infinity turned upright.'},
+    9:{strengths:['Compassion','Idealism','Wisdom','Universality','Creative power'],challenges:['Impracticality','Moodiness','Possessiveness','Martyrdom'],career:'Humanitarian work, arts, healing, international work, teaching, activism',love:'Romantic, passionate and giving. Loves deeply and universally.',health:'Head, blood, adrenals. Prone to accidents if energy not directed.',spiritual:'The number of divine completion. Contains all other numbers within it.'}
+  }
+};
+
+const ANGEL_NUMBERS={
+  111:{title:'New Beginnings',msg:'The universe is opening a fresh chapter. Your thoughts are manifesting rapidly — focus on what you want, not what you fear.'},
+  222:{title:'Divine Balance',msg:'Trust the process. Everything is unfolding in perfect divine timing. Stay patient and keep faith.'},
+  333:{title:'Trinity Activation',msg:'The Ascended Masters surround you. Your mind, body and spirit are aligning for a creative breakthrough.'},
+  444:{title:'Angelic Protection',msg:'Your angels are right beside you, offering strength and protection. You are on the right path.'},
+  555:{title:'Transformation Wave',msg:'Major change is imminent. Release what no longer serves you. Embrace the shift with courage.'},
+  666:{title:'Realign Your Thoughts',msg:'A gentle reminder to balance material and spiritual focus. Return to love and trust in divine abundance.'},
+  777:{title:'Spiritual Mastery',msg:'You are on the most spiritually aligned path of your life. Expect miracles and deep insights to multiply.'},
+  888:{title:'Infinite Abundance',msg:'Financial flow and karmic rewards are coming your way. Abundance in all forms is your birthright.'},
+  999:{title:'Divine Completion',msg:'A major life cycle is ending to allow something greater to begin. Let go gracefully.'},
+  1111:{title:'Awakening Portal',msg:'The most powerful manifestation signal. You are awakening to your true self. Make a wish.'},
+  2222:{title:'Miracle Alignment',msg:'Hold steady — a miraculous breakthrough is arriving. Do not give up now.'},
+  3333:{title:'Masters Calling',msg:'You are being called to a higher spiritual mission. Speak your truth and share your gifts boldly.'},
+  4444:{title:'Fortified Foundation',msg:'Your work, discipline and prayers have built an unshakeable foundation. Move forward boldly.'},
+  5555:{title:'Quantum Leap',msg:'One of the most transformative sequences. A rapid, radical shift in your life direction is being orchestrated.'}
+};
+
+const COMPOUND={
+  10:{name:'Wheel of Fortune',desc:'Rise and fall — karmic completion.',positive:'Fortune, elevation',caution:'Pride can reverse gains'},
+  11:{name:'The Conqueror',desc:'Master number of great power.',positive:'Mastery, vision',caution:'Nervous energy'},
+  13:{name:'The Regenerator',desc:'Karmic debt — upheaval and transformation.',positive:'Transformation, rebirth',caution:'Laziness, instability'},
+  14:{name:'The Magnetic',desc:'A karmic number of movement and change.',positive:'Adaptability, magnetism',caution:'Overindulgence'},
+  15:{name:'The Enchanter',desc:'Highly magnetic — attracts people and money.',positive:'Magnetism, charisma',caution:'Manipulation risk'},
+  16:{name:'Shattered Tower',desc:'Karmic debt — fall of ego.',positive:'Spiritual depth',caution:'Ego destruction'},
+  17:{name:'Star of Venus',desc:'One of the most fortunate Chaldean numbers.',positive:'Fame, spiritual protection',caution:'Stay grounded'},
+  18:{name:"Moon's Illusion",desc:'Hidden enemies and strife require vigilance.',positive:'Resilience',caution:'Betrayal, illusion'},
+  19:{name:'Prince of Heaven',desc:'Karmic — brings success after overcoming ego.',positive:'Success, leadership',caution:'Isolation, pride'},
+  20:{name:'The Awakening',desc:'Spiritual calling and divine timing.',positive:'Spiritual gifts',caution:'Delays'},
+  21:{name:'Crown of the Magi',desc:'One of the most fortunate numbers.',positive:'Victory, advancement',caution:'Competition'},
+  22:{name:'The Master Builder',desc:'Capable of extraordinary achievement.',positive:'Mastery, manifestation',caution:'Self-sabotage'},
+  23:{name:'Royal Star of the Lion',desc:'One of the luckiest numbers.',positive:'Royal protection, success',caution:'Overconfidence'},
+  24:{name:'Love Resolved',desc:'Love, beauty and artistic gifts.',positive:'Love, harmony',caution:'Codependency'},
+  25:{name:'Spiritual Guide',desc:'Success through wisdom.',positive:'Wisdom, analytical power',caution:'Isolation'},
+  27:{name:'The Sceptre',desc:'Command and authority.',positive:'Authority, influence',caution:'Stubbornness'},
+  33:{name:'The Christ Number',desc:'The highest master number.',positive:'Healing, mastery',caution:'Martyrdom'}
+};
+
+const TRAVEL_DESC={1:'Solo travel and leadership journeys. Pioneer new destinations.',2:'Travel with a partner is most fulfilling. Cultural, peaceful destinations.',3:'Social, artistic travel — festivals, creative retreats.',4:'Structured, purposeful travel — educational tours.',5:'Born to roam. Spontaneous, adventurous travel.',6:'Family holidays, wellness retreats resonate deeply.',7:'Spiritual pilgrimages, retreats and contemplative travel.',8:'Luxury and business travel with purpose.',9:'International humanitarian or spiritual travel.',11:'Mystical, spiritually charged journeys.',22:'Grand, purposeful travel that leaves a legacy.',33:'Healing journeys and pilgrimages to sacred sites.'};
+const SUCCESS_DESC={1:'Success through bold, independent action. Lead, initiate, pioneer.',2:'Success through partnership, patience and co-operation.',3:'Success flows through creative expression and joy.',4:'Steady, disciplined effort is your formula.',5:'Versatility and bold risk-taking bring your greatest success.',6:'Success through service, love and creating beauty.',7:'Deep expertise and spiritual alignment bring success.',8:'Financial and executive success is your destiny.',9:'Universal success — serve a cause greater than yourself.',11:'Inspired, visionary leadership brings success.',22:'Destined to build something of lasting significance.',33:'Success measured in lives uplifted.'};
+const MONEY_DESC={1:'Wealth comes through leadership and entrepreneurship.',2:'Financial flow increases through partnerships.',3:'Creativity is your greatest financial asset.',4:'Steady, disciplined saving and building creates wealth.',5:'Multiple income streams bring financial freedom.',6:'Service and family-oriented businesses bring reward.',7:'Specialised knowledge commands premium value.',8:'The number of millionaires. Executive roles maximise earning.',9:'Money flows as you serve — universal support arrives.',11:'Intuitive investments and inspirational ventures.',22:'Think globally. Build for generations.',33:'Financial abundance flows through healing and teaching.'};
+
+// ═══════════════════════════════════════════════════════
+// CORE CALCULATION HELPERS
+// ═══════════════════════════════════════════════════════
+let currentSystem='chaldean';
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);document.querySelectorAll('.theme-btn').forEach(b=>{b.classList.remove('active');if((t==='dark'&&b.textContent.includes('Dark'))||(t==='light'&&b.textContent.includes('Light'))||(t==='oled'&&b.textContent.includes('OLED')))b.classList.add('active');});const colors={dark:'#b07fff',light:'#7f50ff',oled:'#000000'};document.querySelectorAll('meta[name="theme-color"]').forEach(m=>m.setAttribute('content',colors[t]||'#b07fff'));}
+function selectSystem(sys,el){currentSystem=sys;document.querySelectorAll('.sys-tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function reduce(n,km=true){if(km&&(n===11||n===22||n===33))return n;if(n<10)return n;let s=String(n).split('').reduce((a,d)=>a+parseInt(d),0);return reduce(s,km);}
+function lv(ch,map){return map[ch.toLowerCase()]||0;}
+const VOWELS='aeiou';
+function isV(c){return VOWELS.includes(c.toLowerCase());}
+function isL(c){return /[a-zA-Z]/.test(c);}
+function nameVals(name,map){return name.split('').filter(c=>isL(c)).map(c=>lv(c,map));}
+function sumR(arr,km=true){return reduce(arr.reduce((a,v)=>a+v,0),km);}
+function getLifePath(dob){if(!dob)return null;const[y,m,d]=dob.split('-').map(Number);return reduce(reduce(m,false)+reduce(d,false)+reduce(String(y).split('').reduce((a,c)=>a+parseInt(c),0),false));}
+function getExpr(name,map){return sumR(nameVals(name,map));}
+function getSoul(name,map){return sumR(name.split('').filter(c=>isL(c)&&isV(c)).map(c=>lv(c,map)));}
+function getPersonality(name,map){return sumR(name.split('').filter(c=>isL(c)&&!isV(c)).map(c=>lv(c,map)));}
+function getBirthday(dob){if(!dob)return null;return reduce(parseInt(dob.split('-')[2]),true);}
+function getPersonalYear(dob){if(!dob)return null;const[,m,d]=dob.split('-').map(Number);const y=String(new Date().getFullYear()).split('').reduce((a,c)=>a+parseInt(c),0);return reduce(reduce(m,false)+reduce(d,false)+reduce(y,false));}
+function getPersonalMonth(dob){const py=getPersonalYear(dob);if(!py)return null;return reduce(py+new Date().getMonth()+1);}
+function getPersonalDay(dob){const pm=getPersonalMonth(dob);if(!pm)return null;return reduce(pm+new Date().getDate());}
+function getMaturity(lp,expr){if(!lp||!expr)return null;return reduce(lp+expr);}
+function getBalance(name,map){const inits=name.trim().split(/\s+/).map(w=>w[0]).filter(Boolean);return sumR(inits.map(c=>lv(c,map)));}
+function getRational(name,dob,map){if(!dob)return null;const fn=name.trim().split(/\s+/)[0];return reduce(getExpr(fn,map)+getBirthday(dob));}
+function getHiddenPassion(name,map){const vals=nameVals(name,map);const freq={};vals.forEach(v=>{freq[v]=(freq[v]||0)+1;});let max=0;Object.values(freq).forEach(f=>{if(f>max)max=f;});return Object.keys(freq).filter(k=>freq[k]===max).map(Number).sort((a,b)=>a-b)[0];}
+function getSubcon(name,map){const vals=nameVals(name,map);return new Set(vals.map(v=>((v-1)%9)+1)).size;}
+function getPinnacles(lp,dob){if(!dob||!lp)return[];const[y,,]=dob.split('-').map(Number);const m=reduce(parseInt(dob.split('-')[1]),false),d=reduce(parseInt(dob.split('-')[2]),false),yv=reduce(String(y).split('').reduce((a,c)=>a+parseInt(c),0),false);const p1=reduce(m+d),p2=reduce(d+yv),p3=reduce(p1+p2),p4=reduce(m+yv);const a1=36-lp;return[{num:p1,ages:'0–'+a1},{num:p2,ages:(a1+1)+'–'+(a1+9)},{num:p3,ages:(a1+10)+'–'+(a1+18)},{num:p4,ages:(a1+19)+'+'}];}
+function getChallenges(dob){if(!dob)return[];const m=reduce(parseInt(dob.split('-')[1]),false),d=reduce(parseInt(dob.split('-')[2]),false),y=reduce(String(parseInt(dob.split('-')[0])).split('').reduce((a,c)=>a+parseInt(c),0),false);const c1=Math.abs(m-d),c2=Math.abs(d-y),c3=Math.abs(c1-c2),c4=Math.abs(m-y);return[c1,c2,c3,c4];}
+function getKarmicLessons(name,map){const vals=new Set(nameVals(name,map).map(v=>((v-1)%9)+1));return[1,2,3,4,5,6,7,8,9].filter(i=>!vals.has(i));}
+function getMinorExpr(name,map){const p=name.trim().split(/\s+/);if(p.length<2)return null;return getExpr(p.slice(0,-1).join(' '),map);}
+function getMinorSoul(name,map){const p=name.trim().split(/\s+/);if(p.length<2)return null;return getSoul(p.slice(0,-1).join(' '),map);}
+function getPowerName(name,map){return getExpr(name.trim().split(/\s+/).pop(),map);}
+function getPlanesOfExpression(name,map){const physL=['e','w','d','m'],mentL=['a','h','j','n','q','b','p','f','r'],emotL=['i','o','r','z','t','l','s','x'];let ph=0,mn=0,em=0,it=0;name.toLowerCase().split('').filter(c=>isL(c)).forEach(c=>{const v=lv(c,map);if(physL.includes(c))ph+=v;else if(mentL.includes(c))mn+=v;else if(emotL.includes(c))em+=v;else it+=v;});return{Physical:reduce(ph)||1,Mental:reduce(mn)||1,Emotional:reduce(em)||1,Intuitive:reduce(it)||1};}
+function getAchievement(lp,expr){if(!lp||!expr)return null;return reduce(lp+expr);}
+function getBridgeNum(expr,lp){if(!expr||!lp)return null;return Math.abs(reduce(expr,false)-reduce(lp,false));}
+function getTravelNum(dob,map,name){if(!dob)return null;return reduce(reduce(parseInt(dob.split('-')[1]),false)+reduce(parseInt(dob.split('-')[2]),false)+reduce(getExpr(name,map)));}
+function getSuccessNum(lp,expr,py){if(!lp||!expr)return null;return reduce(lp+expr+(py||0));}
+function getMoneyNum(lp,expr,bday){if(!lp||!expr||!bday)return null;return reduce(lp+bday+expr);}
+function digitsOnly(s){return s.replace(/[^0-9]/g,'');}
+function alnVal(s,map){let t=0;s.toUpperCase().split('').forEach(c=>{if(/[A-Za-z]/.test(c))t+=lv(c,map);else if(/[0-9]/.test(c))t+=parseInt(c);});return t;}
+function calcAddress(addr,map){if(!addr.trim())return null;const nm=addr.match(/^(\d+[A-Za-z]?)/);let sn=0,rest=addr;if(nm){sn=nm[1].split('').reduce((a,c)=>a+(isNaN(c)?lv(c,map):parseInt(c)),0);rest=addr.slice(nm[0].length).trim();}const nv=rest.split('').filter(c=>isL(c)).reduce((a,c)=>a+lv(c,map),0);return{houseNum:reduce(sn),streetVal:reduce(nv),total:reduce(sn+nv)};}
+function calcPhone(ph){const d=digitsOnly(ph);if(!d)return null;return reduce(d.split('').reduce((a,c)=>a+parseInt(c),0));}
+function calcPlate(pl,map){if(!pl.trim())return null;return reduce(alnVal(pl,map));}
+function calcSerial(s,map){if(!s.trim())return null;return reduce(alnVal(s,map));}
+function calcRoom(r,map){if(!r.trim())return null;return reduce(alnVal(r,map));}
+function m9(n){return MEANINGS[n]||MEANINGS[((n-1)%9)+1]||{key:'—',desc:''};}
+
+// ═══════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════════════════
+function renderCoreGrid(lp,expr,soul,pers,bday,maturity){
+  const nums=[{label:'Life Path',value:lp,tip:'Master blueprint'},{label:'Expression',value:expr,tip:'Destiny & talent'},{label:'Soul Urge',value:soul,tip:"Heart's desire"},{label:'Personality',value:pers,tip:'How others see you'},{label:'Birthday',value:bday,tip:'Special talent'},{label:'Maturity',value:maturity,tip:'Ultimate goal'}];
+  document.getElementById('coreGrid').innerHTML=nums.map(cn=>{const isM=[11,22,33].includes(cn.value);const kd=KARMA_DEBT[cn.value];const mn=m9(cn.value||1);return`<div class="num-card"><div class="num-label">${cn.label}</div><div class="num-value${isM?' master':kd?' karmic':''}">${cn.value||'—'}</div><div class="num-meaning">${mn.key}</div>${isM?'<div style="font-size:10px;color:var(--gold);margin-top:4px">&#9733; Master</div>':''}${kd?'<div style="font-size:10px;color:#f87171;margin-top:4px">&#9888; Karmic</div>':''}</div>`;}).join('');}
+
+function renderInterp(lp,expr,soul,pers){
+  const items=[{i:'&#127775;',t:'Life Path '+lp,s:m9(lp||1)},{i:'&#10024;',t:'Expression '+expr,s:m9(expr)},{i:'&#128156;',t:'Soul Urge '+soul,s:m9(soul)},{i:'&#127917;',t:'Personality '+pers,s:m9(pers)}];
+  document.getElementById('interpPanel').innerHTML=items.map(it=>`<div class="interp-item"><div class="interp-title">${it.i} ${it.t} &mdash; ${it.s.key}</div><div class="interp-body">${it.s.desc}</div></div>`).join('');}
+
+function renderLucky(lp){
+  const k=[11,22,33].includes(lp)?lp:((lp-1)%9)+1;
+  const lk=LUCKY[lp]||LUCKY[k]||LUCKY[1];
+  document.getElementById('luckyGrid').innerHTML=`<div class="lucky-item"><div class="lucky-label">Lucky Days</div><div class="lucky-val">${lk.days}</div></div><div class="lucky-item"><div class="lucky-label">Lucky Colors</div><div class="lucky-val">${lk.colors}</div></div><div class="lucky-item"><div class="lucky-label">Lucky Gems</div><div class="lucky-val">${lk.gems}</div></div><div class="lucky-item"><div class="lucky-label">Lucky Numbers</div><div class="lucky-val">${lk.nums}</div></div>`;}
+
+function renderCompat(lp){
+  const lpC=((lp-1)%9)+1;const high=COMPAT[lpC]||[1,3];
+  let h='';for(let i=1;i<=9;i++){const cl=high.includes(i)?'high':Math.abs(i-lpC)<=2?'mid':'low';h+=`<div class="compat-num ${cl}">${i}</div>`;}
+  h+=`<div class="compat-num ${high.includes(11)?'high':'mid'}">11</div><div class="compat-num ${high.includes(22)?'high':'mid'}">22</div>`;
+  document.getElementById('compatGrid').innerHTML=h;}
+
+function renderElements(lp){
+  const el=ELEMENTS[lp]||ELEMENTS[((lp-1)%9)+1]||'Fire';
+  const ec={Fire:'#ff7043',Earth:'#66bb6a',Air:'#29b6f6',Water:'#ab47bc'};
+  document.getElementById('elemGrid').innerHTML=['Fire','Earth','Air','Water'].map(e=>{const a=e===el;const pct=a?75:Math.floor(Math.random()*40)+5;return`<div style="margin-bottom:14px;"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:${a?700:400};color:${a?ec[e]:'var(--text2)'};">${e}${a?' &#9733;':''}</span><span style="font-size:12px;color:var(--text2);">${pct}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${ec[e]};"></div></div></div>`;}).join('');}
+
+function renderPowerNums(tn,sn,mn){
+  document.getElementById('powerGrid').innerHTML='<div class="power-grid">'+[
+    {icon:'&#9992;',label:'Travel Number',num:tn,color:'var(--accent2)',desc:TRAVEL_DESC[tn]||TRAVEL_DESC[((tn||1)-1)%9+1]||''},
+    {icon:'&#127942;',label:'Success Number',num:sn,color:'var(--gold)',desc:SUCCESS_DESC[sn]||SUCCESS_DESC[((sn||1)-1)%9+1]||''},
+    {icon:'&#128176;',label:'Money Number',num:mn,color:'#4ade80',desc:MONEY_DESC[mn]||MONEY_DESC[((mn||1)-1)%9+1]||''}
+  ].map(p=>`<div class="power-card"><div style="font-size:24px;margin-bottom:8px;">${p.icon}</div><div class="power-label">${p.label}</div><div class="power-num" style="background:linear-gradient(135deg,${p.color},var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${p.num||'—'}</div><div class="power-desc">${(p.desc||'').substring(0,110)}</div></div>`).join('')+'</div>';}
+
+function renderAngels(lp,expr,soul,py){
+  const nums=[lp,expr,soul,py].filter(Boolean);
+  const keys=Object.keys(ANGEL_NUMBERS).map(Number);
+  const show=keys.filter(k=>{const r=String(k).split('').reduce((a,b)=>a+parseInt(b),0);return nums.some(n=>n===r||n===((r-1)%9)+1);}).slice(0,4);
+  if(show.length===0)show.push(111,222,333,444);
+  document.getElementById('angelCard').style.display='block';
+  document.getElementById('angelGrid').innerHTML=show.map(n=>{const a=ANGEL_NUMBERS[n];return`<div class="angel-card"><div class="angel-num">${n} &middot; ${a.title}</div><div style="font-size:12px;color:var(--text2);line-height:1.7;">${a.msg}</div></div>`;}).join('');}
+
+function renderCompound(lp,expr,soul,pers,bday){
+  const nums=[lp,expr,soul,pers,bday].filter(n=>n&&n>=10&&n<=52&&COMPOUND[n]);
+  const base=((lp-1)%9)+1;
+  [10+base,19+base,21,23,17].forEach(n=>{if(COMPOUND[n]&&!nums.includes(n))nums.push(n);});
+  const uniq=[...new Set(nums)].slice(0,6);
+  document.getElementById('compoundCard').style.display='block';
+  document.getElementById('compoundGrid').innerHTML=uniq.map(n=>{const c=COMPOUND[n];return`<div class="compound-card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;"><div style="font-size:32px;font-weight:900;min-width:48px;text-align:center;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${n}</div><div><div style="font-size:13px;font-weight:700;color:var(--text);">${c.name}</div><div style="font-size:11px;color:var(--accent);font-weight:600;">&#10022; ${c.positive}</div></div></div><div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:6px;">${c.desc}</div><div style="font-size:11px;color:#f87171;">&#9888; Caution: ${c.caution}</div></div>`;}).join('');}
+
+// Extended report
+let _extToggle={};
+function toggleExt(id){
+  const body=document.getElementById('ext-body-'+id);
+  const arrow=document.getElementById('ext-arrow-'+id);
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  if(arrow)arrow.classList.toggle('open',open);}
+
+function extCard(id,num,title,subtitle,detailGrid,interpretation,advice){
+  const numDisplay=[11,22,33].includes(num)?`<span style="color:var(--gold);">${num}</span>`:KARMA_DEBT[num]?`<span style="color:#f87171;">${num}</span>`:`${num}`;
+  return`<div class="ext-feature-card"><div class="ext-feature-header" onclick="toggleExt('${id}')"><div class="ext-num-badge">${numDisplay}</div><div style="flex:1;"><div class="ext-feature-title">${title}</div><div class="ext-feature-subtitle">${subtitle}</div></div><div class="ext-feature-arrow" id="ext-arrow-${id}">&#9660;</div></div><div class="ext-feature-body" id="ext-body-${id}">${detailGrid?`<div class="ext-detail-grid">${detailGrid}</div>`:''}${interpretation?`<div class="ext-interpretation">${interpretation}</div>`:''}${advice?`<div class="ext-advice"><div class="ext-advice-label">&#9998; Guidance</div>${advice}</div>`:''}</div></div>`;}
+
+function dtItem(label,value){return`<div class="ext-detail-item"><div class="ext-detail-label">${label}</div><div class="ext-detail-value">${value||'—'}</div></div>`;}
+
+function renderExtended(data){
+  const{lp,expr,soul,pers,bday,py,pm,pd,maturity,balance,rational,hidden,subcon,pinnacles,challenges,karmic,minorExpr,minorSoul,powerName,planes,achievement,bridge,tn,sn,mn,name,dob,map}=data;
+  const lpD=EXT_INTERP.lifePath[((lp-1)%9)+1]||EXT_INTERP.lifePath[1];
+  const pyI=EXT_INTERP.personalYear[py]||EXT_INTERP.personalYear[((py-1)%9)+1]||{title:'—',advice:'—'};
+  let html='';
+  html+=extCard('lp',lp,`Life Path ${lp} &mdash; ${m9(lp).key}`,'The master blueprint of your soul',
+    dtItem('Element',ELEMENTS[lp]||ELEMENTS[((lp-1)%9)+1]||'Fire')+dtItem('Master Number',[11,22,33].includes(lp)?'YES &#9733;':'No')+dtItem('Karmic Debt',KARMA_DEBT[lp]||'None')+dtItem('Career',lpD?lpD.career.substring(0,40)+'...':'—'),
+    `Life Path ${lp} — <strong>${m9(lp).key}</strong>. ${m9(lp).desc}<br><br><strong>Career:</strong> ${lpD?lpD.career:'—'}<br><strong>Love:</strong> ${lpD?lpD.love:'—'}<br><strong>Health:</strong> ${lpD?lpD.health:'—'}<br><strong>Spiritual:</strong> ${lpD?lpD.spiritual:'—'}`,
+    lpD?`Strengths: ${lpD.strengths.join(', ')}. Challenges: ${lpD.challenges.join(', ')}.`:'');
+  html+=extCard('expr',expr,`Expression ${expr} &mdash; ${m9(expr).key}`,'Your destiny and outer gifts',
+    dtItem('System',SYSTEMS[currentSystem].name)+dtItem('Root',((expr-1)%9)+1)+dtItem('Master',[11,22,33].includes(expr)?'YES':'No')+dtItem('Gap from LP',Math.abs(expr-lp)),
+    `Expression ${expr} reveals your natural talents. ${m9(expr).desc}`,`Use your ${m9(expr).key} energy fully — it is your divine contribution.`);
+  html+=extCard('soul',soul,`Soul Urge ${soul} &mdash; ${m9(soul).key}`,"The deepest desire of your heart",
+    dtItem('Derived From','Vowels in birth name')+dtItem('Root',((soul-1)%9)+1)+dtItem('Alignment with LP',soul===lp?'Perfect':'See interpretation')+dtItem('Bridge to LP',Math.abs(soul-lp)),
+    `Soul Urge ${soul} reveals what your heart truly yearns for. ${m9(soul).desc}`,`Ask: does this choice honour my deepest self?`);
+  html+=extCard('pers',pers,`Personality ${pers} &mdash; ${m9(pers).key}`,'How the world perceives you',
+    dtItem('Derived From','Consonants in birth name')+dtItem('Root',((pers-1)%9)+1)+dtItem('Gap from Soul',Math.abs(soul-pers))+dtItem('First Impression',m9(pers).key),
+    `Personality ${pers}: ${m9(pers).desc}`,`You come across as ${m9(pers).key.toLowerCase()}. Use this in networking and first impressions.`);
+  html+=extCard('bday',bday,`Birthday ${bday}`,'Your special innate talent',
+    dtItem('Birth Day',dob?dob.split('-')[2]:'—')+dtItem('Reduced To',bday)+dtItem('Talent',m9(bday).key)+dtItem('Master',[11,22,33].includes(bday)?'YES':'No'),
+    `Birthday ${bday}: ${m9(bday).desc}`,`This gift comes naturally — ensure it is expressed in your career.`);
+  html+=extCard('py',py,`Personal Year ${py} &mdash; ${pyI.title}`,'Your current annual vibration',
+    dtItem('Current Year',new Date().getFullYear())+dtItem('Personal Year',py)+dtItem('Personal Month',pm)+dtItem('Personal Day',pd),
+    `Personal Year ${py} — <strong>${pyI.title}</strong>. ${m9(py).desc}`,pyI.advice);
+  html+=extCard('pm',pm,`Personal Month ${pm}`,'Your current monthly vibration',
+    dtItem('Current Month',new Date().toLocaleString('default',{month:'long'}))+dtItem('Personal Month',pm)+dtItem('Derived From',`Year ${py} + Month ${new Date().getMonth()+1}`)+dtItem('Energy',m9(pm).key),
+    `Personal Month ${pm}: ${m9(pm).desc}`,`Use this month's energy of ${m9(pm).key.toLowerCase()} to advance your annual goals.`);
+  html+=extCard('mat',maturity,`Maturity ${maturity}`,'Your ultimate life achievement',
+    dtItem('Life Path',lp)+dtItem('Expression',expr)+dtItem('Formula',lp+'+'+expr+'='+maturity)+dtItem('Activated','Age 40-45+'),
+    `Maturity ${maturity}: ${m9(maturity).desc}`,`Everything is preparing you for this soul destination.`);
+  html+=extCard('ach',achievement,`Achievement ${achievement}`,'Your greatest accomplishment domain',
+    dtItem('Life Path',lp)+dtItem('Expression',expr)+dtItem('Formula',lp+' + '+expr)+dtItem('Energy',m9(achievement).key),
+    `Achievement ${achievement}: ${m9(achievement).desc}`,`Channel your ambition into this arena for maximum universal support.`);
+  html+=extCard('bal',balance,`Balance ${balance}`,'Your key to emotional equilibrium',
+    dtItem('Derived From','First letters of name parts')+dtItem('Balance',balance)+dtItem('Reset Path',m9(balance).key)+dtItem('Element',ELEMENTS[balance]||ELEMENTS[((balance-1)%9)+1]||'Fire'),
+    `Balance ${balance}: When life becomes turbulent, ${m9(balance).key.toLowerCase()} energy restores you. ${m9(balance).desc}`,`Use your Balance ${balance} as your personal reset protocol.`);
+  html+=extCard('rat',rational,`Rational Thought ${rational}`,'How your mind processes information',
+    dtItem('First Name',name.trim().split(/\s+/)[0])+dtItem('Birthday',bday)+dtItem('Formula','First Name + Birthday')+dtItem('Thinking Style',m9(rational||1).key),
+    `Rational Thought ${rational}: ${m9(rational||1).desc}`,`Work with your natural thinking style rather than against it.`);
+  html+=extCard('hid',hidden,`Hidden Passion ${hidden}`,'Your most frequent letter value',
+    dtItem('Most Frequent Value',hidden)+dtItem('Represents',m9(hidden||1).key)+dtItem('Inner Drive',m9(hidden||1).desc.substring(0,50)+'...'),
+    `Hidden Passion ${hidden}: ${m9(hidden||1).desc}`,`This energy, channelled consciously, becomes one of your greatest strengths.`);
+  html+=extCard('sub',subcon,`Subconscious Self ${subcon}`,'Distinct values — your resilience',
+    dtItem('Distinct Values',subcon)+dtItem('Numbers Present',[...new Set(nameVals(name,map).map(v=>((v-1)%9)+1))].sort().join(', '))+dtItem('Missing',getKarmicLessons(name,map).join(', ')||'None')+dtItem('Resilience',subcon>=6?'High':'Developing'),
+    `Subconscious Self ${subcon}: You have ${subcon} distinct number strengths to draw on under pressure.`,`${subcon>=6?'You are exceptionally well-prepared for challenges.':'Developing awareness in missing number areas strengthens your resilience.'}`);
+  
+  const pinnStr=pinnacles.map((p,i)=>`P${i+1}:${p.num}(${p.ages})`).join(' | ');
+  html+=extCard('pin',pinnacles[0]?pinnacles[0].num:lp,'Pinnacle Cycles','4 major life chapters',
+    pinnacles.map((p,i)=>dtItem(`Pinnacle ${i+1} (${p.ages})`,p.num+' — '+m9(p.num).key)).join(''),
+    `${pinnacles.map((p,i)=>`<strong>P${i+1} (${p.ages}):</strong> ${m9(p.num).desc}`).join('<br><br>')}`,
+    `Align major decisions with the energy of your current Pinnacle.`);
+  html+=extCard('chal',challenges[0]||0,'Life Challenges','4 soul tests you chose before incarnating',
+    challenges.map((c,i)=>dtItem(`Challenge ${i+1}`,c)).join(''),
+    `${challenges.map((c,i)=>`<strong>Challenge ${i+1} (${c}):</strong> ${m9(c||1).desc}`).join('<br><br>')}`,
+    `Challenges are not punishments — they are your growth curriculum.`);
+  
+  const kdNums=[lp,expr,soul,pers].filter(n=>KARMA_DEBT[n]);
+  html+=extCard('kl',karmic.length||0,'Karmic Lessons',karmic.length?`Missing: ${karmic.join(', ')}`:'All 9 numbers present — complete!',
+    dtItem('Missing',karmic.length?karmic.join(', '):'None')+dtItem('Subconscious Self',subcon),
+    karmic.length?karmic.map(k=>`<strong>Missing ${k}:</strong> ${m9(k).desc}`).join('<br><br>'):'All 9 numbers represented — exceptional soul completeness.',
+    karmic.length?`Deliberately develop qualities of numbers ${karmic.join(', ')}.`:'Deep mastery of your present numbers is your growth path.');
+  
+  document.getElementById('extendedGrid').innerHTML=html;}
+
+// Prediction year meanings
+const YR_PRED={1:'Year of new beginnings — a powerful year to plant seeds. Launch projects, start businesses, begin relationships.',2:'Year of patience and partnerships. Important alliances form. Diplomacy unlocks more doors than aggression.',3:'Year of creative explosion and joyful self-expression. Guard against scatter.',4:'Foundational year — discipline and hard work. Invest now.',5:'Dynamic change-filled year. Travel, adventure and bold moves are favoured.',6:'Year of love, family, responsibility. Relationships deepen.',7:'Year of inner work and spiritual development. Research and reflect.',8:'Powerful year for career advancement and financial gains.',9:'Year of completion and service. Generosity attracts remarkable returns.',11:'Master year of spiritual awakening and inspired leadership.',22:'Most powerful personal year — think globally.',33:'Year of the highest spiritual service and healing.'};
+
+function renderPrediction(name,dob,lp,expr,soul,pers,py,pm,tn,sn,mn,sysName){
+  const lpD=EXT_INTERP.lifePath[((lp-1)%9)+1]||EXT_INTERP.lifePath[1];
+  const pyP=YR_PRED[py]||YR_PRED[((py-1)%9)+1]||'';
+  const high=COMPAT[((lp-1)%9)+1]||[1,3];
+  const dobFmt=dob?new Date(dob).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):'Not provided';
+  const age=dob?new Date().getFullYear()-parseInt(dob.split('-')[0]):null;
+  const sections=[
+    {icon:'&#127775;',title:'Identity & Life Purpose',text:`${name}, born on ${dobFmt}${age?' (age '+age+')':''}, your Life Path is ${lp} — ${m9(lp).key}. ${m9(lp).desc} Expression ${expr} (${m9(expr).key}) reveals your talents. Soul Urge ${soul} (${m9(soul).key}) is your deepest yearning. System: ${sysName}.`},
+    {icon:'&#128188;',title:'Career & Professional Destiny',text:`${lpD?lpD.career:'Leadership and pioneering roles'}. Expression ${expr} adds ${m9(expr).key} to your professional identity. Success Number ${sn||'—'}: ${SUCCESS_DESC[sn]||SUCCESS_DESC[((sn||1)-1)%9+1]||'Authentic leadership.'}`},
+    {icon:'&#128176;',title:'Wealth & Financial Forecast',text:`Money Number ${mn||'—'}. ${MONEY_DESC[mn]||MONEY_DESC[((mn||1)-1)%9+1]||'Disciplined effort builds wealth.'} Personal Year ${py}: ${pyP.substring(0,150)}`},
+    {icon:'&#10084;&#65039;',title:'Love & Relationships',text:`Soul Urge ${soul}: ${lpD?lpD.love:'deep, authentic connection'}. Most compatible: ${high.join(', ')}. ${[11,22,33].includes(lp)?'Master number bearer requires a partner of depth and spiritual maturity.':''}`},
+    {icon:'&#9992;',title:'Travel & Adventure',text:`Travel Number ${tn||'—'}. ${TRAVEL_DESC[tn]||TRAVEL_DESC[((tn||1)-1)%9+1]||'Your journeys are divinely guided.'}`},
+    {icon:'&#128302;',title:'Spiritual Path & Soul Mission',text:`${lpD?lpD.spiritual:'Mastery and service.'} Soul Urge ${soul} yearns for ${m9(soul).key.toLowerCase()}.`},
+    {icon:'&#128197;',title:`Personal Year ${py}`,text:`${pyP} Personal Month ${pm}: ${pm<=3?'bold initiation':pm<=6?'sustained effort':'completion and release'}.`},
+    {icon:'&#9889;',title:'Strengths, Challenges & Health',text:`Strengths: ${lpD?lpD.strengths.join(', '):'Leadership, creativity'}. Challenges: ${lpD?lpD.challenges.join(', '):'Balance personal needs with service'}. Health: ${lpD?lpD.health:'Balance work and rest'}.`},
+    {icon:'&#127942;',title:'Life Legacy & Highest Potential',text:`${name}, your chart reveals a life of ${[1,8,22].includes(lp)?'extraordinary leadership':[2,6,33].includes(lp)?'deep love and healing':[3,5].includes(lp)?'creative brilliance':[7,11].includes(lp)?'spiritual wisdom':'universal compassion'}. Everything is preparing you for your culminating expression. Live it fully.`}
+  ];
+  document.getElementById('predCard').style.display='block';
+  document.getElementById('predGrid').innerHTML=sections.map(s=>`<div class="pred-section"><div class="pred-section-title">${s.icon} ${s.title}</div><div class="pred-text">${s.text}</div></div>`).join('');
+  window._rpt={name,dob,lp,expr,soul,pers,py,pm,tn,sn,mn,sysName,sections};}
+
+// ═══════════════════════════════════════════════════════
+// EXPORTS
+// ═══════════════════════════════════════════════════════
+function buildTXT(){
+  const r=window._rpt;if(!r)return'';
+  const D='='.repeat(60),L='-'.repeat(60);
+  let t=`${D}\n    SOULCODE NUMEROLOGY REPORT\n    ${r.name}\n    Generated: ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}\n    System: ${r.sysName}\n${D}\n\nCORE NUMBERS\n${L}\nLife Path: ${r.lp||'—'}    Expression: ${r.expr||'—'}    Soul Urge: ${r.soul||'—'}\nPersonality: ${r.pers||'—'}    Personal Year: ${r.py||'—'}\nTravel: ${r.tn||'—'}    Success: ${r.sn||'—'}    Money: ${r.mn||'—'}\n\n`;
+  r.sections.forEach(s=>{t+=`${s.title.replace(/&#\d+;/g,'').replace(/&[a-z]+;/g,'').trim().toUpperCase()}\n${L}\n${s.text.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,' ')}\n\n`;});
+  t+=`${D}\n© ${new Date().getFullYear()} Manik Roy. All Rights Reserved. SoulCode.\n${D}`;return t;}
+
+function exportTXT(){const t=buildTXT();if(!t){alert('Calculate first.');return;}const b=new Blob([t],{type:'text/plain'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=(window._rpt.name||'SoulCode').replace(/\s+/g,'_')+'_Report.txt';a.click();URL.revokeObjectURL(u);}
+
+function exportPDF(){
+  const r=window._rpt;if(!r){alert('Calculate first.');return;}
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=210,H=297,M=18,CW=W-M*2;let y=M;
+  const bg=()=>{doc.setFillColor(15,12,26);doc.rect(0,0,W,H,'F');};
+  bg();
+  doc.setFillColor(30,20,55);doc.roundedRect(M,y,CW,38,4,4,'F');
+  doc.setDrawColor(176,127,255);doc.setLineWidth(0.4);doc.roundedRect(M,y,CW,38,4,4,'S');
+  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(176,127,255);
+  doc.text('SOULCODE',W/2,y+10,{align:'center'});
+  doc.setFontSize(11);doc.setTextColor(240,236,255);doc.text(r.name,W/2,y+19,{align:'center'});
+  doc.setFontSize(8);doc.setTextColor(168,158,196);
+  doc.text(`System: ${r.sysName}  |  ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}`,W/2,y+28,{align:'center'});
+  y+=46;
+  doc.setFillColor(20,15,45);doc.roundedRect(M,y,CW,34,3,3,'F');
+  doc.setDrawColor(127,216,255);doc.setLineWidth(0.3);doc.roundedRect(M,y,CW,34,3,3,'S');
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(127,216,255);doc.text('CORE NUMBERS',M+4,y+7);
+  [[`Life Path`,r.lp],[`Expression`,r.expr],[`Soul Urge`,r.soul],[`Personality`,r.pers],[`Personal Year`,r.py],[`Travel`,r.tn],[`Success`,r.sn],[`Money`,r.mn]].forEach((n,i)=>{const cx=M+4+(i%4)*(CW/4),cy=y+12+Math.floor(i/4)*12;doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(168,158,196);doc.text(n[0]+':',cx,cy);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(255,215,112);doc.text(String(n[1]||'—'),cx+22,cy);});
+  y+=42;
+  const cl=t=>t.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,' ').replace(/&#\d+;/g,'').trim();
+  r.sections.forEach((s,idx)=>{
+    if(y+18>H-M){doc.addPage();y=M;bg();}
+    doc.setFillColor(176,127,255,0.10);doc.roundedRect(M,y,CW,10,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(176,127,255);
+    doc.text(cl(s.title).substring(0,60),M+4,y+7);y+=13;
+    doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(200,195,220);
+    doc.splitTextToSize(cl(s.text),CW).forEach(l=>{if(y+6>H-M){doc.addPage();y=M;bg();}doc.text(l,M,y);y+=5.5;});
+    y+=6;
+  });
+  doc.save((r.name||'SoulCode').replace(/\s+/g,'_')+'_Report.pdf');}
+
+function exportDOCX(){
+  const r=window._rpt;if(!r){alert('Calculate first.');return;}
+  try{
+    const{Document,Packer,Paragraph,TextRun,AlignmentType}=docx;
+    const ch=[];const cl=t=>t.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,' ').replace(/&#\d+;/g,'').trim();
+    ch.push(new Paragraph({children:[new TextRun({text:'SOULCODE — NUMEROLOGY REPORT',bold:true,size:36,color:'7F50FF'})],alignment:AlignmentType.CENTER,spacing:{after:200}}));
+    ch.push(new Paragraph({children:[new TextRun({text:r.name,bold:true,size:28})],alignment:AlignmentType.CENTER,spacing:{after:100}}));
+    ch.push(new Paragraph({children:[new TextRun({text:`System: ${r.sysName} | ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}`,size:18,color:'888888'})],alignment:AlignmentType.CENTER,spacing:{after:400}}));
+    [[`Life Path`,r.lp],[`Expression`,r.expr],[`Soul Urge`,r.soul],[`Personality`,r.pers],[`Personal Year`,r.py],[`Travel`,r.tn],[`Success`,r.sn],[`Money`,r.mn]].forEach(n=>{ch.push(new Paragraph({children:[new TextRun({text:`${n[0]}: `,bold:true,size:20}),new TextRun({text:String(n[1]||'—'),size:20,color:'C49A00'})],spacing:{after:80}}));});
+    r.sections.forEach(s=>{ch.push(new Paragraph({children:[new TextRun({text:cl(s.title),bold:true,size:24,color:'7F50FF'})],spacing:{before:400,after:120}}));ch.push(new Paragraph({children:[new TextRun({text:cl(s.text),size:19,color:'444444'})],spacing:{after:200}}));});
+    ch.push(new Paragraph({children:[new TextRun({text:`© ${new Date().getFullYear()} Manik Roy. All Rights Reserved. SoulCode.`,size:16,color:'999999',italics:true})],alignment:AlignmentType.CENTER,spacing:{before:600}}));
+    Packer.toBlob(new Document({sections:[{children:ch}]})).then(b=>{const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=(r.name||'SoulCode').replace(/\s+/g,'_')+'_Report.docx';a.click();URL.revokeObjectURL(u);});
+  }catch(e){alert('DOCX export unavailable. Use TXT or PDF.');console.error(e);}}
+
+// ═══════════════════════════════════════════════════════
+// SPECIAL CALCULATORS
+// ═══════════════════════════════════════════════════════
+function showSpecialToast(msg){
+  const t=document.createElement('div');t.textContent=msg;
+  Object.assign(t.style,{position:'fixed',bottom:'80px',left:'50%',transform:'translateX(-50%)',
+    background:'rgba(15,12,26,0.96)',backdropFilter:'blur(20px)',
+    border:'1.5px solid var(--gold)',borderRadius:'40px',padding:'10px 20px',
+    fontFamily:'Outfit,sans-serif',fontSize:'13px',fontWeight:'600',color:'var(--gold)',
+    zIndex:'99999',whiteSpace:'nowrap',boxShadow:'0 4px 20px rgba(0,0,0,0.5)'});
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2800);}
+
+function specMiniCard(label,value,color){return`<div style="text-align:center;padding:8px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--text2);margin-bottom:4px;">${label}</div><div style="font-size:20px;font-weight:900;color:${color};">${value}</div></div>`;}
+
+function calculateSpecial(){
+  const sys=SYSTEMS[currentSystem];
+  renderSpecialResults(sys.map,null);}
+
+function renderSpecialResults(map,lp){
+  const newName=document.getElementById('newNameInput').value.trim();
+  const address=document.getElementById('addressInput').value.trim();
+  const phone=document.getElementById('phoneInput').value.trim();
+  let plate=document.getElementById('plateInput').value.trim();
+  let serial=document.getElementById('serialInput').value.trim();
+  let room=document.getElementById('roomInput').value.trim();
+  let business=document.getElementById('businessInput').value.trim();
+  let product=document.getElementById('productInput').value.trim();
+  let child=document.getElementById('childInput').value.trim();
+  let city=document.getElementById('cityInput').value.trim();
+  let partner=document.getElementById('partnerInput').value.trim();
+  let food=document.getElementById('foodInput').value.trim();
+  let friend=document.getElementById('friendInput').value.trim();
+  let wedding=document.getElementById('weddingInput').value;
+  let employer=document.getElementById('employerInput').value.trim();
+  let song=document.getElementById('songInput').value.trim();
+  let animal=document.getElementById('animalInput').value.trim();
+  let dream=document.getElementById('dreamInput').value.trim();
+  let book=document.getElementById('bookInput').value.trim();
+  let event=document.getElementById('eventInput').value;
+  let colour=document.getElementById('colourInput').value.trim();
+  let time=document.getElementById('timeInput').value.trim();
+  let mantra=document.getElementById('mantraInput').value.trim();
+  let country=document.getElementById('countryInput').value.trim();
+  let homeStyle=document.getElementById('homeStyleInput').value.trim();
+  let career=document.getElementById('careerInput').value.trim();
+  let handle=document.getElementById('handleInput').value.trim();
+  let password=document.getElementById('passwordInput').value.trim();
+  const origName=document.getElementById('nameInput').value.trim();
+
+  const hasAny=newName||address||phone||plate||serial||room||business||product||child||city||partner||food||friend||wedding||employer||song||animal||dream||book||event||colour||time||mantra||country||homeStyle||career||handle||password;
+  const card=document.getElementById('specialResultsCard');
+  if(!hasAny){card.style.display='none';showSpecialToast('Enter at least one special field above.');return;}
+  card.style.display='block';card.scrollIntoView({behavior:'smooth',block:'start'});
+  const sg=document.getElementById('specialGrid');sg.innerHTML='';
+
+  const specCard=(icon,num,title,body)=>`<div class="interp-item" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div style="width:36px;height:36px;border-radius:10px;background:rgba(176,127,255,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;">${icon}</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--text);">${title}</div></div><div style="font-size:40px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${num}</div></div>${body}</div>`;
+  const specDetail=(label,val)=>`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0;">${specMiniCard(label,val,'var(--accent)')}</div>`;
+  const specInterp=(txt)=>`<div style="font-size:12px;color:var(--text2);line-height:1.7;margin-top:8px;">${txt}</div>`;
+  const premiumSpecCard=(icon,title)=>`<div class="interp-item" style="margin-bottom:12px;opacity:0.75;border:1.5px dashed rgba(176,127,255,0.3);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;"><span style="font-size:22px;">${icon}</span><div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--text);">${title}</div><div style="font-size:11px;color:var(--text2);margin-top:2px;">&#9733; SoulCode Pro feature</div></div><button onclick="openSubModal()" style="padding:6px 14px;border-radius:10px;border:none;background:linear-gradient(135deg,#b07fff,#7f50ff);color:#fff;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">Upgrade</button></div>`;
+
+  if(plate&&!isPro){sg.innerHTML+=premiumSpecCard('&#128663;','Car / Vehicle Plate');plate='';}
+  if(serial&&!isPro){sg.innerHTML+=premiumSpecCard('&#128230;','Product Serial Number');serial='';}
+  if(room&&!isPro){sg.innerHTML+=premiumSpecCard('&#128682;','Room / Flat Number');room='';}
+  if(business&&!isPro){sg.innerHTML+=premiumSpecCard('&#127970;','Business Name');business='';}
+  if(product&&!isPro){sg.innerHTML+=premiumSpecCard('&#127381;','Product Name');product='';}
+  if(child&&!isPro){sg.innerHTML+=premiumSpecCard('&#128118;','Child Name');child='';}
+  if(city&&!isPro){sg.innerHTML+=premiumSpecCard('&#127963;','City / Place Name');city='';}
+  if(partner&&!isPro){sg.innerHTML+=premiumSpecCard('&#128148;','Relationship / Sex Number');partner='';}
+  if(food&&!isPro){sg.innerHTML+=premiumSpecCard('&#127860;','Favourite Food');food='';}
+  if(friend&&!isPro){sg.innerHTML+=premiumSpecCard('&#128101;','Friend Name');friend='';}
+  if(wedding&&!isPro){sg.innerHTML+=premiumSpecCard('&#128084;','Wedding Date');wedding='';}
+  if(employer&&!isPro){sg.innerHTML+=premiumSpecCard('&#128188;','Employer Name');employer='';}
+  if(song&&!isPro){sg.innerHTML+=premiumSpecCard('&#127911;','Song / Album');song='';}
+  if(animal&&!isPro){sg.innerHTML+=premiumSpecCard('&#128012;','Spirit Animal');animal='';}
+  if(dream&&!isPro){sg.innerHTML+=premiumSpecCard('&#127381;','Dream / Goal');dream='';}
+  if(book&&!isPro){sg.innerHTML+=premiumSpecCard('&#128214;','Book / Movie Title');book='';}
+  if(event&&!isPro){sg.innerHTML+=premiumSpecCard('&#127881;','Event Date');event='';}
+  if(colour&&!isPro){sg.innerHTML+=premiumSpecCard('&#128167;','Colour / Gemstone');colour='';}
+  if(time&&!isPro){sg.innerHTML+=premiumSpecCard('&#128336;','Lucky Time');time='';}
+  if(mantra&&!isPro){sg.innerHTML+=premiumSpecCard('&#128218;','Mantra / Affirmation');mantra='';}
+  if(country&&!isPro){sg.innerHTML+=premiumSpecCard('&#127758;','Country Name');country='';}
+  if(homeStyle&&!isPro){sg.innerHTML+=premiumSpecCard('&#127968;','Dream Home Style');homeStyle='';}
+  if(career&&!isPro){sg.innerHTML+=premiumSpecCard('&#128736;','Career / Profession');career='';}
+  if(handle&&!isPro){sg.innerHTML+=premiumSpecCard('&#128138;','Social Media Handle');handle='';}
+  if(password&&!isPro){sg.innerHTML+=premiumSpecCard('&#128293;','Password Vibration');password='';}
+  if(newName){const ne=getExpr(newName,map),ns=getSoul(newName,map),np=getPersonality(newName,map);const oe=origName?getExpr(origName,map):null;sg.innerHTML+=specCard('&#9999;&#65039;',ne,`Name: "${newName}"`,`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0;">${specMiniCard('Expression',ne,'var(--accent)')}${specMiniCard('Soul Urge',ns,'var(--accent2)')}${specMiniCard('Personality',np,'var(--accent3)')}</div>${specInterp(m9(ne).key+': '+m9(ne).desc+(oe?` Shift from ${oe} → ${ne}.`:''))}`);}
+  if(address){const ad=calcAddress(address,map);if(ad)sg.innerHTML+=specCard('&#127968;',ad.total,`Address: "${address}"`,`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0;">${specMiniCard('House',ad.houseNum,'var(--accent)')}${specMiniCard('Street',ad.streetVal,'var(--accent2)')}${specMiniCard('Total',ad.total,'var(--gold)')}</div>${specInterp('Home vibration '+ad.total+': '+m9(ad.total).key+' — '+m9(ad.total).desc)}`);}
+  if(phone){const pn=calcPhone(phone);if(pn!==null)sg.innerHTML+=specCard('&#128222;',pn,`Phone: "${phone}"`,specInterp('Phone vibration '+pn+': '+m9(pn).key+' — '+m9(pn).desc));}
+  if(plate){const pl=calcPlate(plate,map);if(pl!==null)sg.innerHTML+=specCard('&#128663;',pl,`Plate: "${plate}"`,specInterp('Vehicle vibration '+pl+': '+m9(pl).key+' — '+m9(pl).desc));}
+  if(serial){const sr=calcSerial(serial,map);if(sr!==null)sg.innerHTML+=specCard('&#128230;',sr,`Serial: "${serial}"`,specInterp('Device vibration '+sr+': '+m9(sr).key+' — '+m9(sr).desc));}
+  if(room){const rm=calcRoom(room,map);if(rm!==null)sg.innerHTML+=specCard('&#128682;',rm,`Room: "${room}"`,specInterp('Space vibration '+rm+': '+m9(rm).key+' — '+m9(rm).desc));}
+  if(business){const bn=getExpr(business,map);sg.innerHTML+=specCard('&#127970;',bn,`Business: "${business}"`,specInterp('Brand vibration '+bn+': '+m9(bn).key+' — '+m9(bn).desc));}
+  if(product){const pn2=getExpr(product,map);sg.innerHTML+=specCard('&#127381;',pn2,`Product: "${product}"`,specInterp('Product vibration '+pn2+': '+m9(pn2).key+' — '+m9(pn2).desc));}
+  if(child){const ce=getExpr(child,map);sg.innerHTML+=specCard('&#128118;',ce,`Child: "${child}"`,specInterp('Destiny '+ce+': '+m9(ce).key+' — '+m9(ce).desc));}
+  if(city){const cn=getExpr(city,map);sg.innerHTML+=specCard('&#127963;',cn,`City: "${city}"`,specInterp('City vibration '+cn+': '+m9(cn).key+' — '+m9(cn).desc));}
+  if(partner){const pe=getExpr(partner,map);const yourE=origName?getExpr(origName,map):null;const attract=yourE?reduce(pe+yourE):null;sg.innerHTML+=specCard('&#128148;',pe,`Partner: "${partner}"`,specInterp('Partner vibration '+pe+': '+m9(pe).key+(attract?' | Attraction Number: '+attract+' ('+m9(attract).key+')':(origName?'':' — Enter your name to see Attraction Number.'))));}
+  if(food){const fn=getExpr(food,map);sg.innerHTML+=specCard('&#127860;',fn,`Food: "${food}"`,specInterp('Food vibration '+fn+': '+m9(fn).key+' — '+m9(fn).desc));}
+  if(friend){const fe=getExpr(friend,map);const yourE=origName?getExpr(origName,map):null;const bond=yourE?reduce(fe+yourE):null;sg.innerHTML+=specCard('&#128101;',fe,`Friend: "${friend}"`,specInterp('Friendship vibration '+fe+': '+m9(fe).key+(bond?' | Bond Number: '+bond+' ('+m9(bond).key+')':'')+'<br>'+m9(fe).desc));}
+  if(wedding){const d=wedding.split('-').map(Number);const wn=reduce(reduce(d[1],false)+reduce(d[2],false)+reduce(String(d[0]).split('').reduce((a,c)=>a+parseInt(c),0),false));sg.innerHTML+=specCard('&#128084;',wn,`Wedding: ${new Date(wedding+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}`,specInterp('Marriage vibration '+wn+': '+m9(wn).key+' — '+m9(wn).desc));}
+  if(employer){const en=getExpr(employer,map);sg.innerHTML+=specCard('&#128188;',en,`Employer: "${employer}"`,specInterp('Company vibration '+en+': '+m9(en).key+' — '+m9(en).desc));}
+  if(song){const sn=getExpr(song,map);sg.innerHTML+=specCard('&#127911;',sn,`Song: "${song}"`,specInterp('Music vibration '+sn+': '+m9(sn).key+' — '+m9(sn).desc));}
+  if(animal){const an=getExpr(animal,map);sg.innerHTML+=specCard('&#128012;',an,`Animal: "${animal}"`,specInterp('Totem vibration '+an+': '+m9(an).key+' — '+m9(an).desc));}
+  if(dream){const dn=getExpr(dream,map);sg.innerHTML+=specCard('&#127381;',dn,`Dream: "${dream}"`,specInterp('Dream vibration '+dn+': '+m9(dn).key+' — '+m9(dn).desc));}
+  if(book){const bn=getExpr(book,map);sg.innerHTML+=specCard('&#128214;',bn,`Title: "${book}"`,specInterp('Title vibration '+bn+': '+m9(bn).key+' — '+m9(bn).desc));}
+  if(event){const d=event.split('-').map(Number);const evn=reduce(reduce(d[1],false)+reduce(d[2],false)+reduce(String(d[0]).split('').reduce((a,c)=>a+parseInt(c),0),false));sg.innerHTML+=specCard('&#127881;',evn,`Event: ${new Date(event+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}`,specInterp('Date vibration '+evn+': '+m9(evn).key+' — '+m9(evn).desc));}
+  if(colour){const cn=getExpr(colour,map);sg.innerHTML+=specCard('&#128167;',cn,`Colour: "${colour}"`,specInterp('Colour vibration '+cn+': '+m9(cn).key+' — '+m9(cn).desc));}
+  if(time){const digits=time.replace(/[^0-9]/g,'');if(digits){const tn=reduce(digits.split('').reduce((a,c)=>a+parseInt(c),0));sg.innerHTML+=specCard('&#128336;',tn,`Time: "${time}"`,specInterp('Hour vibration '+tn+': '+m9(tn).key+' — '+m9(tn).desc));}}
+  if(mantra){const mn=getExpr(mantra,map);sg.innerHTML+=specCard('&#128218;',mn,`Mantra: "${mantra}"`,specInterp('Mantra vibration '+mn+': '+m9(mn).key+' — '+m9(mn).desc));}
+  if(country){const ctn=getExpr(country,map);sg.innerHTML+=specCard('&#127758;',ctn,`Country: "${country}"`,specInterp('National vibration '+ctn+': '+m9(ctn).key+' — '+m9(ctn).desc));}
+  if(homeStyle){const hn=getExpr(homeStyle,map);sg.innerHTML+=specCard('&#127968;',hn,`Home Style: "${homeStyle}"`,specInterp('Style vibration '+hn+': '+m9(hn).key+' — '+m9(hn).desc));}
+  if(career){const crn=getExpr(career,map);sg.innerHTML+=specCard('&#128736;',crn,`Career: "${career}"`,specInterp('Career vibration '+crn+': '+m9(crn).key+' — '+m9(crn).desc));}
+  if(handle){const clean=handle.replace(/^@/,'').replace(/[^a-zA-Z0-9]/g,'');if(clean){const hln=getExpr(clean,map);sg.innerHTML+=specCard('&#128138;',hln,`Handle: "@${clean}"`,specInterp('Handle vibration '+hln+': '+m9(hln).key+' — '+m9(hln).desc));}}
+  if(password){const digOnly=password.replace(/[^0-9]/g,'');if(digOnly){const pwn=reduce(digOnly.split('').reduce((a,c)=>a+parseInt(c),0));sg.innerHTML+=specCard('&#128293;',pwn,`Password Vibration`,specInterp('<strong>Privacy:</strong> No data stored. Digit Vibration '+pwn+': '+m9(pwn).key+' — '+m9(pwn).desc));}}
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// SUBSCRIPTION / MONETISATION SYSTEM
+// ═══════════════════════════════════════════════════════
+// ── CONFIG: Replace with your real UPI ID ──
+const SC_UPI_ID    = 'yourname@upi';          // e.g. manikroy@okicici
+// Valid one-time activation codes (add as many as you like)
+const SC_CODES     = ['SC-PRO-2024', 'SC-PRO-GIFT1', 'SC-PRO-BETA'];
+// ────────────────────────────────────────────────────────────────────
+
+let isPro = false;
+
+function loadSubState(){
+  try{
+    const s=localStorage.getItem('sc_pro');
+    if(s){const d=JSON.parse(s);if(d.active&&(!d.expiry||Date.now()<d.expiry)){isPro=true;}}
+  }catch(e){}
+  applySubState();
+}
+
+function saveSubState(expiry){
+  try{localStorage.setItem('sc_pro',JSON.stringify({active:true,expiry:expiry||null,ts:Date.now()}));}catch(e){}
+}
+
+function applySubState(){
+  const wrap=document.getElementById('premiumResultsWrap');
+  const banner=document.getElementById('subStatusBanner');
+  const headerBtn=document.getElementById('headerSubBtn');
+  const bannerBtn=document.getElementById('subBannerBtn');
+  const bannerLabel=document.getElementById('subBannerLabel');
+  const bannerDesc=document.getElementById('subBannerDesc');
+  if(isPro){
+    if(wrap)wrap.style.display='block';
+    if(banner){banner.style.background='linear-gradient(135deg,rgba(176,127,255,0.15),rgba(127,216,255,0.08))';banner.style.borderColor='rgba(176,127,255,0.5)';}
+    if(bannerLabel)bannerLabel.textContent='✦ Pro Plan — Active';
+    if(bannerDesc)bannerDesc.textContent='All 65 features unlocked · Extended analysis · Full exports';
+    if(bannerBtn){bannerBtn.textContent='✓ Pro Active';bannerBtn.style.background='linear-gradient(135deg,#4ade80,#22c55e)';bannerBtn.onclick=null;bannerBtn.style.cursor='default';}
+    if(headerBtn){headerBtn.textContent='✓ Pro Active';headerBtn.style.background='linear-gradient(135deg,#4ade80,#22c55e)';headerBtn.onclick=null;headerBtn.style.cursor='default';}
+    // Show premium special calc results
+    document.querySelectorAll('.special-premium-badge').forEach(b=>b.style.display='none');
+  } else {
+    if(wrap){wrap.style.position='relative';wrap.style.display='block';}
+    renderFreeGate();
+  }
+}
+
+function renderFreeGate(){
+  const wrap=document.getElementById('premiumResultsWrap');
+  if(!wrap||isPro)return;
+  // Remove existing overlay if any
+  const old=document.getElementById('freeGateOverlay');
+  if(old)old.remove();
+  const overlay=document.createElement('div');
+  overlay.id='freeGateOverlay';
+  overlay.style.cssText='position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;z-index:10;padding-top:40px;';
+  overlay.innerHTML=`<div class="lock-overlay-inner">
+    <div class="lock-icon">&#128274;</div>
+    <div class="lock-title">Premium Features Locked</div>
+    <div class="lock-sub">Extended Analysis, Lucky Elements, Compatibility,<br>Angel Numbers, Power Numbers, Prediction Report<br>and Exports are available in <strong style="color:var(--accent);">SoulCode Pro</strong>.</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;">
+      <span style="font-size:12px;font-weight:700;color:#4ade80;">₹1001/month</span>
+      <span style="font-size:12px;color:var(--text2);">or</span>
+      <span style="font-size:12px;font-weight:700;color:var(--accent2);">$11/month</span>
+    </div>
+    <button class="lock-cta" onclick="openSubModal()">&#9733; Upgrade to Pro</button>
+  </div>`;
+  wrap.style.position='relative';
+  wrap.appendChild(overlay);
+  // Blur the content
+  Array.from(wrap.children).forEach(c=>{if(c.id!=='freeGateOverlay')c.style.cssText+='filter:blur(5px) brightness(0.45);pointer-events:none;user-select:none;';});
+}
+
+function openSubModal(){
+  document.getElementById('upiIdText').textContent=SC_UPI_ID;
+  document.getElementById('subModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  loadSavedQR();
+}
+function closeSubModal(){
+  document.getElementById('subModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function selectPayMethod(method){
+  document.getElementById('upiDetails').classList.remove('show');
+  document.getElementById('payUPI').classList.remove('active');
+  document.getElementById('upiCheck').textContent='';
+  if(method==='upi'){
+    document.getElementById('upiDetails').classList.add('show');
+    document.getElementById('payUPI').classList.add('active');
+    document.getElementById('upiCheck').textContent='✓';
+  }
+}
+function copyUPI(){
+  navigator.clipboard.writeText(SC_UPI_ID).then(()=>showToast('UPI ID copied!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=SC_UPI_ID;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('UPI ID copied!');
+  });
+}
+// ── QR CODE MANAGEMENT ──
+function setQRImage(src){
+  if(!src)return;
+  try{localStorage.setItem('sc_qr',src);}catch(e){}
+  document.getElementById('qrPreviewImg').src=src;
+  document.getElementById('qrPreviewWrap').style.display='block';
+  document.getElementById('qrDropZone').style.display='none';
+  document.getElementById('qrUrlInput').value='';
+}
+function removeQR(){
+  try{localStorage.removeItem('sc_qr');}catch(e){}
+  document.getElementById('qrPreviewImg').src='';
+  document.getElementById('qrPreviewWrap').style.display='none';
+  document.getElementById('qrDropZone').style.display='block';
+}
+function loadSavedQR(){
+  try{const s=localStorage.getItem('sc_qr');if(s)setQRImage(s);}catch(e){}
+}
+function handleQRFile(e){
+  const file=e.target.files[0];
+  if(!file||!file.type.startsWith('image/'))return;
+  const reader=new FileReader();
+  reader.onload=ev=>setQRImage(ev.target.result);
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+function handleQRDrop(e){
+  e.preventDefault();
+  document.getElementById('qrDropZone').style.borderColor='rgba(176,127,255,0.35)';
+  document.getElementById('qrDropZone').style.background='rgba(255,255,255,0.02)';
+  const file=e.dataTransfer.files[0];
+  if(file&&file.type.startsWith('image/')){
+    const reader=new FileReader();
+    reader.onload=ev=>setQRImage(ev.target.result);
+    reader.readAsDataURL(file);
+  }
+}
+function applyQRUrl(){
+  const url=document.getElementById('qrUrlInput').value.trim();
+  if(url)setQRImage(url);
+  else showToast('Please enter an image URL','#f87171');
+}
+function verifyPayment(method){
+  const id=document.getElementById('utrInput').value.trim();
+  if(!id){showToast('Please enter your UTR / Transaction ID','#f87171');return;}
+  if(id.length<6){showToast('Transaction ID seems too short','#f87171');return;}
+  activatePro(30);
+  showToast('&#127881; Pro activated! Enjoy SoulCode Pro for 30 days.','#4ade80');
+  closeSubModal();
+}
+function activateCode(){
+  const code=document.getElementById('proCodeInput').value.trim().toUpperCase();
+  if(SC_CODES.includes(code)){
+    activatePro(365);
+    showToast('&#9733; Code accepted! Pro access granted for 1 year.','#4ade80');
+    closeSubModal();
+  } else {
+    showToast('Invalid or already used code.','#f87171');
+  }
+}
+function activatePro(days){
+  isPro=true;
+  const expiry=days?Date.now()+days*86400000:null;
+  saveSubState(expiry);
+  applySubState();
+}
+function showToast(msg,bg='#b07fff'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:${bg};color:#fff;padding:10px 22px;border-radius:12px;font-family:Outfit,sans-serif;font-size:14px;font-weight:700;z-index:99999;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;`;
+  t.innerHTML=msg;document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.5s';setTimeout(()=>t.remove(),500);},2500);
+}
+
+// CLEAR ALL INPUTS
+// ═══════════════════════════════════════════════════════
+function clearAllInputs(){
+  document.querySelectorAll('input[type="text"],input[type="date"],input[type="number"],input:not([type])').forEach(inp=>{inp.value='';});
+  ['resultsCard','specialResultsCard','reportCard','exportCard'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// MAIN CALCULATE
+// ═══════════════════════════════════════════════════════
+function calculate(){
+  const name=document.getElementById('nameInput').value.trim();
+  const dob=document.getElementById('dobInput').value;
+  if(!name){alert('Please enter your full birth name.');return;}
+  const sys=SYSTEMS[currentSystem];const map=sys.map;
+  const lp=getLifePath(dob)||1;
+  const expr=getExpr(name,map);
+  const soul=getSoul(name,map);
+  const pers=getPersonality(name,map);
+  const bday=getBirthday(dob);
+  const py=getPersonalYear(dob)||1;
+  const pm=getPersonalMonth(dob)||1;
+  const pd=getPersonalDay(dob)||1;
+  const maturity=getMaturity(lp,expr);
+  const balance=getBalance(name,map);
+  const rational=getRational(name,dob,map);
+  const hidden=getHiddenPassion(name,map);
+  const subcon=getSubcon(name,map);
+  const pinnacles=getPinnacles(lp,dob);
+  const challenges=getChallenges(dob);
+  const karmic=getKarmicLessons(name,map);
+  const minorExpr=getMinorExpr(name,map);
+  const minorSoul=getMinorSoul(name,map);
+  const powerName=getPowerName(name,map);
+  const planes=getPlanesOfExpression(name,map);
+  const achievement=getAchievement(lp,expr);
+  const bridge=getBridgeNum(expr,lp);
+  const tn=getTravelNum(dob,map,name);
+  const sn=getSuccessNum(lp,expr,py);
+  const mn=getMoneyNum(lp,expr,bday);
+
+  document.getElementById('sysNameLabel').textContent=sys.name+' System';
+  renderCoreGrid(lp,expr,soul,pers,bday,maturity);
+  renderInterp(lp,expr,soul,pers);
+  renderExtended({lp,expr,soul,pers,bday,py,pm,pd,maturity,balance,rational,hidden,subcon,pinnacles,challenges,karmic,minorExpr,minorSoul,powerName,planes,achievement,bridge,tn,sn,mn,name,dob,map});
+  renderLucky(lp);
+  renderCompat(lp);
+  renderElements(lp);
+  renderAngels(lp,expr,soul,py);
+  renderCompound(lp,expr,soul,pers,bday);
+  renderPowerNums(tn,sn,mn);
+  renderSpecialResults(map,lp);
+  renderPrediction(name,dob,lp,expr,soul,pers,py,pm,tn,sn,mn,sys.name);
+
+  const rc=document.getElementById('results-container');
+  rc.classList.add('show');
+  setTimeout(()=>{rc.scrollIntoView({behavior:'smooth',block:'start'});if(!isPro)renderFreeGate();},100);}
+
+document.getElementById('footerYear').textContent=new Date().getFullYear();
+loadSubState();
+</script>
+
+<!-- SUBSCRIPTION MODAL -->
+<div class="modal-overlay" id="subModal" onclick="if(event.target===this)closeSubModal()">
+  <div class="modal-box" style="position:relative;">
+    <button class="modal-close" onclick="closeSubModal()">&#10005;</button>
+    <div class="modal-title">&#9733; Unlock SoulCode Pro</div>
+    <div class="modal-sub">Get unlimited access to all 65 features, extended analysis, prediction reports, export tools and all special calculators.</div>
+
+    <!-- Pricing -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="border:1.5px solid rgba(74,222,128,0.4);border-radius:14px;padding:14px;background:rgba(74,222,128,0.05);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:#4ade80;text-transform:uppercase;margin-bottom:6px;">Free</div>
+        <div style="font-size:22px;font-weight:900;color:var(--text);">₹0 / $0</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:8px;line-height:1.7;">&#10003; Core Numbers<br>&#10003; 4 Numerology Systems<br>&#10003; Name, Phone &amp; Address<br>&#10007; Extended Analysis<br>&#10007; Prediction Report<br>&#10007; 24 Special Calculators<br>&#10007; Export PDF/DOCX</div>
+      </div>
+      <div style="border:1.5px solid var(--accent);border-radius:14px;padding:14px;background:rgba(176,127,255,0.08);position:relative;">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#b07fff,#7f50ff);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:10px;white-space:nowrap;letter-spacing:0.04em;">BEST VALUE</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;">Pro</div>
+        <div style="font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">₹1001<span style="font-size:12px;color:var(--text2);-webkit-text-fill-color:var(--text2);"> /mo</span></div>
+        <div style="font-size:11px;color:var(--text2);margin-top:8px;line-height:1.7;">&#10003; Everything in Free<br>&#10003; Full Extended Analysis<br>&#10003; Full Prediction Report<br>&#10003; All 27 Special Calculators<br>&#10003; Export PDF / DOCX / TXT<br>&#10003; Angel &amp; Compound Numbers<br>&#10003; Power Numbers</div>
+      </div>
+    </div>
+
+    <!-- Payment method selector -->
+    <div class="pay-title">&#128179; Pay via UPI</div>
+
+    <div class="pay-method active" id="payUPI" onclick="selectPayMethod('upi')">
+      <div class="pay-method-icon">&#127470;&#127475;</div>
+      <div>
+        <div class="pay-method-label">UPI (India)</div>
+        <div class="pay-method-desc">GPay, PhonePe, Paytm, BHIM &mdash; ₹1001/month</div>
+      </div>
+      <div style="margin-left:auto;font-size:18px;" id="upiCheck">✓</div>
+    </div>
+
+    <!-- UPI Details -->
+    <div class="pay-details show" id="upiDetails">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">&#128247; Scan or Copy UPI ID</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">Send exactly <strong style="color:#4ade80;">₹1001</strong> to:</div>
+      <div class="upi-id" id="upiIdText">yourname@upi</div>
+      <button class="copy-btn" onclick="copyUPI()">&#128203; Copy UPI ID</button>
+
+      <!-- QR Code Zone -->
+      <div style="margin-top:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text2);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;">&#128992; UPI QR Code</div>
+
+        <!-- QR Preview (shown when image is set) -->
+        <div id="qrPreviewWrap" style="display:none;position:relative;text-align:center;margin-bottom:10px;">
+          <img id="qrPreviewImg" src="" alt="UPI QR Code" style="max-width:200px;width:100%;border-radius:14px;border:2px solid rgba(176,127,255,0.4);box-shadow:0 4px 24px rgba(176,127,255,0.2);display:block;margin:0 auto;">
+          <button onclick="removeQR()" style="position:absolute;top:6px;right:calc(50% - 106px);background:rgba(255,80,80,0.85);border:none;color:#fff;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer;line-height:1;font-weight:700;" title="Remove QR">&#10005;</button>
+          <div style="font-size:11px;color:#4ade80;margin-top:8px;font-weight:600;">&#10003; QR Code ready for scanning</div>
+        </div>
+
+        <!-- Upload / Drop Zone (shown when no image) -->
+        <div id="qrDropZone"
+          onclick="document.getElementById('qrFileInput').click()"
+          ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(176,127,255,0.1)'"
+          ondragleave="this.style.borderColor='rgba(176,127,255,0.3)';this.style.background='rgba(255,255,255,0.02)'"
+          ondrop="handleQRDrop(event)"
+          style="border:2px dashed rgba(176,127,255,0.35);border-radius:14px;padding:22px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.02);transition:all 0.2s;">
+          <div style="font-size:32px;margin-bottom:8px;">&#128247;</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">Upload your UPI QR Code</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.6;">Click to browse or drag &amp; drop an image<br>PNG · JPG · SVG supported</div>
+          <input type="file" id="qrFileInput" accept="image/*" style="display:none" onchange="handleQRFile(event)">
+        </div>
+
+        <!-- Paste URL option -->
+        <div style="margin-top:8px;display:flex;gap:6px;align-items:center;">
+          <input type="text" id="qrUrlInput" placeholder="Or paste image URL / data:image..." style="flex:1;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:rgba(0,0,0,0.2);color:var(--text);font-family:'Outfit',sans-serif;font-size:12px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+          <button onclick="applyQRUrl()" style="padding:9px 14px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),#7f50ff);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">Set</button>
+        </div>
+        <div style="font-size:10px;color:var(--text2);margin-top:5px;line-height:1.5;">&#128274; Your QR image is stored only in this browser — never uploaded anywhere</div>
+      </div>
+
+      <div style="margin-top:14px;font-size:12px;color:var(--text2);line-height:1.7;">After payment, enter the <strong>UTR / Transaction ID</strong> below for instant activation:</div>
+      <input class="verify-field" type="text" id="utrInput" placeholder="e.g. UTR123456789012" maxlength="30">
+      <button class="verify-btn" onclick="verifyPayment('upi')">&#10003; Activate Pro Now</button>
+      <div style="font-size:11px;color:var(--text2);margin-top:8px;text-align:center;">Activates within minutes after verification</div>
+    </div>
+
+    <!-- Already have code -->
+    <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px;">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">Already have an activation code?</div>
+      <div style="display:flex;gap:8px;">
+        <input class="verify-field" type="text" id="proCodeInput" placeholder="Enter code e.g. SC-PRO-XXXX" maxlength="20" style="flex:1;margin-top:0;">
+        <button class="verify-btn" onclick="activateCode()" style="width:auto;padding:11px 18px;margin-top:0;white-space:nowrap;">Activate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PWA Install Banner -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;max-width:360px;width:calc(100% - 32px);">
+  <div style="background:rgba(15,12,26,0.95);backdrop-filter:blur(24px);border:1.5px solid rgba(176,127,255,0.4);border-radius:18px;padding:16px 18px;box-shadow:0 8px 40px rgba(0,0,0,0.6),0 0 40px rgba(176,127,255,0.15);display:flex;align-items:center;gap:14px;">
+    <img src="icon-96.png" width="44" height="44" style="border-radius:10px;flex-shrink:0;" alt="SoulCode">
+    <div style="flex:1;">
+      <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:700;color:#f0ecff;margin-bottom:2px;">Install SoulCode</div>
+      <div style="font-family:Outfit,sans-serif;font-size:12px;color:#a89ec4;line-height:1.4;">Add to Home Screen for offline access</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+      <button id="pwa-install-btn" onclick="installPWA()" style="padding:8px 14px;border-radius:10px;border:none;background:linear-gradient(135deg,#b07fff,#7f50ff);color:#fff;font-family:Outfit,sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;">Install</button>
+      <button onclick="dismissBanner()" style="padding:4px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#a89ec4;font-family:Outfit,sans-serif;font-size:11px;cursor:pointer;">Later</button>
+    </div>
+  </div>
+</div>
+
+<!-- PWA Offline Bar -->
+<div id="pwa-offline-bar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9998;background:rgba(248,113,113,0.95);backdrop-filter:blur(10px);padding:8px 16px;text-align:center;font-family:Outfit,sans-serif;font-size:13px;font-weight:600;color:#fff;">
+  &#9888; You are offline — SoulCode is running from cache
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══════════════════════════════════════════════════════
+// SoulCode PWA — Service Worker + Install + Offline
+// © Manik Roy 2026
+// ═══════════════════════════════════════════════════════
+let deferredPrompt = null;
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    let reg;
+    try {
+      reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+      console.log('[PWA] ✓ SW registered —', reg.scope);
+    } catch (err) {
+      console.info('[PWA] sw.js not found, using inline Blob SW:', err.message);
+      const swSrc = `
+const VERSION='3.0.0',CACHE='soulcode-v3',CDN=['fonts.googleapis.com','fonts.gstatic.com','cdnjs.cloudflare.com'];
+self.addEventListener('install',e=>{self.skipWaiting();});
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const isCDN=CDN.some(h=>e.request.url.includes(h));e.respondWith((async()=>{const cache=await caches.open(CACHE);const cached=await cache.match(e.request);if(isCDN&&cached)return cached;try{const res=await fetch(e.request);if(res.ok)cache.put(e.request,res.clone());return res;}catch{return cached||new Response('<h2>Offline</h2>',{status:503,headers:{'Content-Type':'text/html'}});}})());});
+self.addEventListener('message',e=>{if(e.data?.type==='SKIP_WAITING')self.skipWaiting();});
+`;
+      try {
+        const blob = new Blob([swSrc], { type: 'application/javascript' });
+        reg = await navigator.serviceWorker.register(URL.createObjectURL(blob));
+        console.log('[PWA] ✓ Blob SW registered');
+      } catch (be) {
+        console.warn('[PWA] SW unavailable:', be.message);
+      }
+    }
+
+    if (!reg) return;
+    reg.addEventListener('updatefound', () => {
+      const nw = reg.installing;
+      if (!nw) return;
+      nw.addEventListener('statechange', () => {
+        if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+          showUpdateToast(reg);
+        }
+      });
+    });
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) { refreshing = true; location.reload(); }
+    });
+  });
+}
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const dismissed = (() => { try { return localStorage.getItem('pwa-dismissed'); } catch { return false; } })();
+  if (!dismissed) setTimeout(() => { const b = document.getElementById('pwa-banner'); if (b) b.style.display = 'block'; }, 2500);
+});
+
+async function installPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  const b = document.getElementById('pwa-banner');
+  if (b) b.style.display = 'none';
+}
+
+function dismissBanner() {
+  const b = document.getElementById('pwa-banner');
+  if (b) b.style.display = 'none';
+  try { localStorage.setItem('pwa-dismissed', '1'); } catch {}
+}
+
+window.addEventListener('appinstalled', () => {
+  const b = document.getElementById('pwa-banner');
+  if (b) b.style.display = 'none';
+  showPWAToast('✦ SoulCode installed — available offline!', '#4ade80');
+});
+
+function updateOnlineStatus() {
+  const bar = document.getElementById('pwa-offline-bar');
+  if (!bar) return;
+  bar.style.display = navigator.onLine ? 'none' : 'block';
+}
+window.addEventListener('online', () => { updateOnlineStatus(); showPWAToast('● Back online', '#4ade80'); });
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
+
+function showPWAToast(msg, color) {
+  const t = document.createElement('div');
+  t.innerHTML = msg;
+  Object.assign(t.style, {
+    position: 'fixed', bottom: '90px', left: '50%',
+    transform: 'translateX(-50%) translateY(20px)',
+    background: 'rgba(15,12,26,0.96)', backdropFilter: 'blur(20px)',
+    border: `1.5px solid ${color||'#b07fff'}`, borderRadius: '40px',
+    padding: '10px 22px', fontFamily: 'Outfit,sans-serif',
+    fontSize: '13px', fontWeight: '600', color: '#f0ecff',
+    zIndex: '99999', whiteSpace: 'nowrap', opacity: '0',
+    transition: 'opacity 0.3s ease, transform 0.3s ease'
+  });
+  document.body.appendChild(t);
+  requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; });
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 350); }, 3000);
+}
+
+function showUpdateToast(reg) {
+  const t = document.createElement('div');
+  t.innerHTML = `<span>▶ New version available</span><button onclick="this.closest('div[data-u]').remove();navigator.serviceWorker.controller?.postMessage({type:'SKIP_WAITING'});" style="margin-left:10px;padding:4px 12px;border-radius:8px;border:none;background:#b07fff;color:#fff;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Update</button>`;
+  t.setAttribute('data-u', '1');
+  Object.assign(t.style, { position: 'fixed', top: '16px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(15,12,26,0.97)', backdropFilter: 'blur(20px)', border: '1.5px solid #ffd770', borderRadius: '12px', padding: '12px 18px'
