@@ -1,0 +1,73 @@
+{
+  "name": "SoulCode — Numerology Calculator",
+  "short_name": "SoulCode",
+  "description": "Chaldean, Pythagorean, Vedic & Kabbalistic numerology with 65 features — Life Path, Extended Analysis, Angel Numbers, Special Calculators, Prediction Report and Pro subscription.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f0c1a",
+  "theme_color": "#b07fff",
+  "lang": "en",
+  "categories": ["lifestyle", "utilities", "education"],
+  "icons": [
+    {
+      "src": "icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "SoulCode — Core Numbers & Analysis"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calculate My Numbers",
+      "short_name": "Calculate",
+      "description": "Open SoulCode and calculate your numerology numbers",
+      "url": "./index.html",
+      "icons": [{ "src": "icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Special Calculators",
+      "short_name": "Specials",
+      "description": "Business name, address, phone and 27 special calculators",
+      "url": "./index.html#special",
+      "icons": [{ "src": "icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Upgrade to Pro",
+      "short_name": "Pro",
+      "description": "Unlock all 65 features with SoulCode Pro — ₹1001/month",
+      "url": "./index.html#upgrade",
+      "icons": [{ "src": "icon-96.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
